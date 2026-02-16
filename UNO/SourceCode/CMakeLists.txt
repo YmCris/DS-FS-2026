@@ -8,4 +8,9 @@ add_executable(SourceCode src/main.cpp
         include/card_game/domain/card/Card.h
         include/card_game/core/enums/Cards/CardColor.h
         include/card_game/core/enums/Cards/CardValue.h
+        src/core/data_structures/DataStructure.cpp
+        include/card_game/core/data_structures/DataStructure.h
+        include/card_game/core/data_structures/linked_list/SimpleNode.h
+        src/core/data_structures/linked_list/LinkedList.cpp
+        include/card_game/core/data_structures/linked_list/LinkedList.h
 )
