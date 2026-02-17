@@ -13,4 +13,6 @@ add_executable(SourceCode src/main.cpp
         include/card_game/core/data_structures/linked_list/SimpleNode.h
         include/card_game/core/data_structures/linked_list/LinkedList.h
         src/core/exceptions/LinkedListException.cpp
+        include/card_game/core/data_structures/double_linked_list/DoubleNode.h
+        include/card_game/core/data_structures/double_linked_list/DoubleLinkedList.h
 )

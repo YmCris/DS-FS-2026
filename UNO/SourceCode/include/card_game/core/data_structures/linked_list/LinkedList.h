@@ -5,7 +5,6 @@
 #ifndef SOURCECODE_LINKEDLIST_H
 #define SOURCECODE_LINKEDLIST_H
 
-#include <iostream>
 #include <stdexcept>
 
 #include "SimpleNode.h"
@@ -41,7 +40,7 @@ public:
     }
 
     // PUBLIC API
-    bool isEmpty() const
+    [[nodiscard]] bool isEmpty() const
     {
         return head_ == nullptr;
     }
@@ -219,27 +218,17 @@ public:
         return node->value();
     }
 
-    void print() const
-    {
-        SimpleNode<T>* node = head_;
-        while (node != nullptr)
-        {
-            std::cout << node->value() << std::endl;
-            node = node->next();
-        }
-    }
-
 private:
     // HELPER METHODS
-    void outOfRangeToAdd(const int pos) const
+    void outOfRangeToAdd(const int position) const
     {
-        if (pos < 0 || pos > size_)
+        if (position < 0 || position > size_)
             throw std::out_of_range("Invalid position to add");
     }
 
-    void outOfRangeToAccess(const int pos) const
+    void outOfRangeToAccess(const int position) const
     {
-        if (pos < 0 || pos >= size_)
+        if (position < 0 || position >= size_)
             throw std::out_of_range("Invalid position");
     }
 
