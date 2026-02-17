@@ -5,8 +5,8 @@
 #ifndef SOURCECODE_CARD_H
 #define SOURCECODE_CARD_H
 
-#include "../../core/enums/Cards/CardColor.h"
-#include  "../../core/enums/Cards/CardValue.h"
+#include "../../core/enums/cards/CardColor.h"
+#include  "../../core/enums/cards/CardValue.h"
 
 /**
 * The Card class header is the class responsible for represent a card
@@ -17,7 +17,7 @@
 class Card
 {
     // LIFETIME
-protected:
+public:
     Card(CardColor color, CardValue value);
 
 public:
@@ -26,7 +26,7 @@ public:
     // PUBLIC API
     [[nodiscard]] CardColor color() const;
     [[nodiscard]] CardValue value() const;
-    virtual void setAbstract() = 0;
+    //virtual void setAbstract() = 0;
 
 private:
     // DATA MEMBERS
