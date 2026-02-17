@@ -2,42 +2,32 @@
 // Created by cristian on 2/17/26.
 //
 
-#ifndef SOURCECODE_DOUBLELINKEDLIST_H
-#define SOURCECODE_DOUBLELINKEDLIST_H
+#ifndef SOURCECODE_CIRCULARLIST_H
+#define SOURCECODE_CIRCULARLIST_H
+#include "../double_linked_list/DoubleLinkedList.h"
 
-#include <stdexcept>
-#include "DoubleNode.h"
 
 /**
-* The DoubleLinkedList class header is the class responsible for 
+* The CircularList class header is the class responsible for 
 * 
 * @author YmCris
 * @since 2/17/26
 */
+
 template <typename T>
-class DoubleLinkedList
+class CircularDoubleLinkedList
 {
 public:
     // LIFETIME
-    DoubleLinkedList() = default;
+    CircularDoubleLinkedList() = default;
 
-    DoubleLinkedList(const DoubleLinkedList&) = delete;
-    DoubleLinkedList& operator=(const DoubleLinkedList&) = delete;
+    CircularDoubleLinkedList(const CircularDoubleLinkedList&) = delete;
+    CircularDoubleLinkedList& operator=(const CircularDoubleLinkedList&)
+    = delete;
 
-    explicit DoubleLinkedList(T value)
+    ~CircularDoubleLinkedList()
     {
-        addFirst(value);
-    }
-
-    ~DoubleLinkedList()
-    {
-        DoubleNode<T>* current = head_;
-        while (current != nullptr)
-        {
-            DoubleNode<T>* temp = current;
-            current = current->next();
-            delete temp;
-        }
+        clear();
     }
 
     // PUBLIC API
@@ -51,6 +41,17 @@ public:
         return size_;
     }
 
+    DoubleNode<T>* getHead() const
+    {
+        return head_;
+    }
+
+    DoubleNode<T>* getTail() const
+    {
+        if (isEmpty()) return nullptr;
+        return head_->prev();
+    }
+
     void addFirst(T& value)
     {
         DoubleNode<T>* node = new DoubleNode<T>(value);
@@ -58,12 +59,19 @@ public:
         if (isEmpty())
         {
             head_ = node;
-            tail_ = node;
+            node->setNext(node);
+            node->setPrev(node);
         }
         else
         {
+            DoubleNode<T>* tail = head_->prev();
+
             node->setNext(head_);
+            node->setPrev(tail);
+
             head_->setPrev(node);
+            tail->setNext(node);
+
             head_ = node;
         }
 
@@ -72,19 +80,20 @@ public:
 
     void addLast(T& value)
     {
-        DoubleNode<T>* node = new DoubleNode<T>(value);
-
         if (isEmpty())
         {
-            head_ = node;
-            tail_ = node;
+            addFirst(value);
+            return;
         }
-        else
-        {
-            node->setPrev(tail_);
-            tail_->setNext(node);
-            tail_ = node;
-        }
+
+        DoubleNode<T>* node = new DoubleNode<T>(value);
+        DoubleNode<T>* tail = head_->prev();
+
+        node->setNext(head_);
+        node->setPrev(tail);
+
+        tail->setNext(node);
+        head_->setPrev(node);
 
         size_++;
     }
@@ -105,9 +114,10 @@ public:
             return;
         }
 
-        DoubleNode<T>* node = new DoubleNode<T>(value);
         DoubleNode<T>* current = getAt(position);
         DoubleNode<T>* prev = current->prev();
+
+        DoubleNode<T>* node = new DoubleNode<T>(value);
 
         node->setNext(current);
         node->setPrev(prev);
@@ -122,40 +132,43 @@ public:
     {
         if (isEmpty()) return;
 
-        DoubleNode<T>* temp = head_;
-
         if (size_ == 1)
         {
-            head_ = tail_ = nullptr;
-        }
-        else
-        {
-            head_ = head_->next();
-            head_->setPrev(nullptr);
+            delete head_;
+            head_ = nullptr;
+            size_ = 0;
+            return;
         }
 
+        DoubleNode<T>* tail = head_->prev();
+        DoubleNode<T>* temp = head_;
+
+        head_ = head_->next();
+
+        head_->setPrev(tail);
+        tail->setNext(head_);
+
         delete temp;
-        --size_;
+        size_--;
     }
 
     void removeLast()
     {
         if (isEmpty()) return;
 
-        DoubleNode<T>* temp = tail_;
-
         if (size_ == 1)
         {
-            head_ = nullptr;
-            tail_ = nullptr;
-        }
-        else
-        {
-            tail_ = tail_->prev();
-            tail_->setNext(nullptr);
+            removeFirst();
+            return;
         }
 
-        delete temp;
+        DoubleNode<T>* tail = head_->prev();
+        DoubleNode<T>* newTail = tail->prev();
+
+        newTail->setNext(head_);
+        head_->setPrev(newTail);
+
+        delete tail;
         size_--;
     }
 
@@ -190,35 +203,47 @@ public:
     {
         validateAccess(position);
 
+        DoubleNode<T>* current;
+
         if (position < size_ / 2)
         {
-            DoubleNode<T>* current = head_;
+            current = head_;
             for (int i = 0; i < position; ++i)
             {
                 current = current->next();
             }
-            return current;
+        }
+        else
+        {
+            current = head_->prev();
+            for (int i = size_ - 1; i > position; --i)
+            {
+                current = current->prev();
+            }
         }
 
-        DoubleNode<T>* current = tail_;
-        for (int i = size_ - 1; i > position; --i)
-        {
-            current = current->prev();
-        }
         return current;
     }
 
-    DoubleNode<T>* getHead() const
+    void clear()
     {
-        return head_;
+        if (isEmpty()) return;
+
+        DoubleNode<T>* current = head_->next();
+
+        while (current != head_)
+        {
+            DoubleNode<T>* temp = current;
+            current = current->next();
+            delete temp;
+        }
+
+        delete head_;
+        head_ = nullptr;
+        size_ = 0;
     }
 
-    DoubleNode<T>* getTail() const
-    {
-        return tail_;
-    }
-
-protected:
+private:
     void validateInsert(const int position) const
     {
         if (position < 0 || position > size_)
@@ -232,8 +257,8 @@ protected:
     }
 
     DoubleNode<T>* head_ = nullptr;
-    DoubleNode<T>* tail_ = nullptr;
     int size_ = 0;
 };
 
-#endif //SOURCECODE_DOUBLELINKEDLIST_H
+
+#endif //SOURCECODE_CIRCULARLIST_H

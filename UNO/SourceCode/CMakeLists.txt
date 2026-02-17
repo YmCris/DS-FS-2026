@@ -15,4 +15,5 @@ add_executable(SourceCode src/main.cpp
         src/core/exceptions/LinkedListException.cpp
         include/card_game/core/data_structures/double_linked_list/DoubleNode.h
         include/card_game/core/data_structures/double_linked_list/DoubleLinkedList.h
+        include/card_game/core/data_structures/circular_list/CircularList.h
 )
