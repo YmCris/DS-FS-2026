@@ -15,10 +15,23 @@ Deck::Deck(const bool flipModeActive, const int players)
 
 LinkedList<Card> Deck::createCards(int players)
 {
-    for (int i = 0; i < static_cast<int>(CardsLimit::Zero); i++)
+    if (flipModeActive_)
     {
-        Card* card = new Card(CardColor::Green, CardValue::Eight);
+        return createFlipCards(players);
     }
+
+    return createNormalCards(players);
+}
+
+LinkedList<Card> Deck::createNormalCards(int player)
+{
+    LinkedList<Card> normalCards;
+
+}
+
+LinkedList<Card> Deck::createFlipCards(int player)
+{
+
 }
 
 LinkedList<Card> Deck::shuffle(LinkedList<Card> cards)
