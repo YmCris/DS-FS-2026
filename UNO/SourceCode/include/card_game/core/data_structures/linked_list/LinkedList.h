@@ -50,7 +50,7 @@ public:
         return size_;
     }
 
-    void addAt(T& value, const int position)
+    void addAt(const T& value, const int position)
     {
         outOfRangeToAdd(position);
 
@@ -82,7 +82,7 @@ public:
         size_++;
     }
 
-    void addFirst(T& value)
+    void addFirst(const T& value)
     {
         SimpleNode<T>* node = new SimpleNode<T>(value);
 
@@ -92,7 +92,7 @@ public:
         size_++;
     }
 
-    void addLast(T& value)
+    void addLast(const T& value)
     {
         SimpleNode<T>* node = new SimpleNode<T>(value);
         if (head_ == nullptr)

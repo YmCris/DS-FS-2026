@@ -4,8 +4,6 @@
 
 #include "../../../include/card_game/domain/deck/Deck.h"
 
-#include <bits/ranges_algo.h>
-
 // PUBLIC API
 Deck::Deck(const bool flipModeActive, const int players)
     : flipModeActive_(flipModeActive),
