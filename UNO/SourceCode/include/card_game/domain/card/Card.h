@@ -5,33 +5,58 @@
 #ifndef SOURCECODE_CARD_H
 #define SOURCECODE_CARD_H
 
+#include <optional>
+
 #include "../../core/enums/cards/CardColor.h"
 #include  "../../core/enums/cards/CardValue.h"
 
 /**
 * The Card class header is the class responsible for represent a card
-* 
+*
 * @author YmCris
 * @since 2/14/26
 */
 class Card
 {
-    // LIFETIME
 public:
-    Card(CardColor color, CardValue value);
+    // STRUCTURES
+    struct CardSide
+    {
+        CardSide(CardColor color, CardValue value);
 
-public:
+        CardColor color() const;
+        CardValue value() const;
+
+    private:
+        CardColor color_;
+        CardValue value_;
+    };
+
+    // LIFETIME
+    Card(bool flip, CardSide front, std::optional<CardSide> back = std::nullopt
+    );
+
     virtual ~Card() = default;
 
+    Card(const Card&) = delete;
+    Card& operator=(const Card&) = delete;
+
+    Card(Card&&) noexcept = default;
+    Card& operator=(Card&&) noexcept = default;
+
     // PUBLIC API
-    [[nodiscard]] CardColor color() const;
-    [[nodiscard]] CardValue value() const;
-    //virtual void setAbstract() = 0;
+    virtual CardValue play() = 0;
+    virtual bool isPlayable(const Card& card) const =0;
+
+    [[nodiscard]] bool isFlip() const;
+    CardSide front() const;
+    std::optional<CardSide> back() const;
 
 private:
     // DATA MEMBERS
-    CardColor color_;
-    CardValue value_;
+    CardSide front_;
+    std::optional<CardSide> back_;
+    bool flip_ = false;
 };
 
 #endif //SOURCECODE_CARD_H

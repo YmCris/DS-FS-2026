@@ -20,6 +20,18 @@ add_executable(SourceCode src/main.cpp
         src/domain/deck/Deck.cpp
         include/card_game/domain/deck/Deck.h
         include/card_game/core/enums/cards/CardsLimit.h
-        include/card_game/core/card_creator/CardCreator.cpp
-        include/card_game/core/card_creator/CardCreator.h
+        src/application/card_creator/CardCreator.cpp
+        include/card_game/application/card_creator/CardCreator.h
+        src/domain/card/FlipCard.cpp
+        include/card_game/domain/card/FlipCard.h
+        src/domain/card/TheftCard.cpp
+        include/card_game/domain/card/TheftCard.h
+        src/domain/card/SkipCard.cpp
+        include/card_game/domain/card/SkipCard.h
+        src/domain/card/ReverseCard.cpp
+        include/card_game/domain/card/ReverseCard.h
+        src/domain/card/ColorWildCard.cpp
+        include/card_game/domain/card/ColorWildCard.h
+        src/domain/card/NumberCard.cpp
+        include/card_game/domain/card/NumberCard.h
 )

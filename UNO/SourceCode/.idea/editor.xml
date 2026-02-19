@@ -2,5 +2,10 @@
 <project version="4">
   <component name="BackendCodeEditorSettings">
     <option name="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7797012C_002D1341_002D5E02_002D847A_002D65B24FDAC6C2_002Fd_003Ainclude_002Fd_003Acard_005Fgame_002Fd_003Acore_002Fd_003Adata_005Fstructures_002Fd_003Alinked_005Flist_002Ff_003ALinkedList_002Eh/@EntryIndexedValue" value="ForceIncluded" type="string" />
+    <option name="/Default/CodeStyle/Generate/=CppConstructor/@KeyIndexDefined" value="true" type="bool" />
+    <option name="/Default/CodeStyle/Generate/=CppConstructor/Options/=AcceptParameterKind/@EntryIndexedValue" value="Const reference" type="string" />
+    <option name="/Default/CodeStyle/Generate/=CppConstructor/Options/=AccessRight/@EntryIndexedValue" value="public" type="string" />
+    <option name="/Default/CodeStyle/Generate/=CppConstructor/Options/=DeclareConstructorsNodiscard/@EntryIndexedValue" value="False" type="string" />
+    <option name="/Default/CodeStyle/Generate/=CppConstructor/Options/=UseConstParameterTypes/@EntryIndexedValue" value="False" type="string" />
   </component>
 </project>
