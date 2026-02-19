@@ -4,51 +4,37 @@
 
 #include "../../../include/card_game/domain/card/Card.h"
 
-// LIFETIME
-Card::Card(CardColor color, CardValue value, bool flip) :
+// CARD SIDE
+Card::CardSide::CardSide(CardColor color, CardValue value) :
     color_(color),
-    value_(value),
-    flip_(flip)
+    value_(value)
 {
 }
 
-// PUBLIC API
-CardColor Card::color() const
+[[nodiscard]] CardColor Card::CardSide::color() const
 {
     return color_;
 }
 
-CardValue Card::value() const
+[[nodiscard]] CardValue Card::CardSide::value() const
 {
     return value_;
 }
 
-bool Card::isFlip() const
+// CARD
+Card::Card(CardSide front,
+           std::optional<CardSide> back) :
+    front_(front),
+    back_(back)
 {
-    return flip_;
 }
 
-void Card::setIsFlip(const bool flip)
+Card::CardSide Card::front() const
 {
-    flip_ = flip;
+    return front_;
 }
 
-Card* Card::reverseCard() const
+std::optional<Card::CardSide> Card::back() const
 {
-    return reverseCard_;
-}
-
-void Card::setReverseCard(Card* reverseCard)
-{
-    reverseCard_ = reverseCard;
-}
-
-Card* Card::currentCardSide() const
-{
-    return currentCardSide_;
-}
-
-void Card::setCurrentCardSide(Card* currentCardSide)
-{
-    currentCardSide_ = currentCardSide;
+    return back_;
 }

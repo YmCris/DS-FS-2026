@@ -24,8 +24,8 @@ public:
     {
         CardSide(CardColor color, CardValue value);
 
-        CardColor color() const;
-        CardValue value() const;
+        [[nodiscard]] CardColor color() const;
+        [[nodiscard]] CardValue value() const;
 
     private:
         CardColor color_;
@@ -33,10 +33,9 @@ public:
     };
 
     // LIFETIME
-    Card(bool flip, CardSide front, std::optional<CardSide> back = std::nullopt
-    );
+    Card(CardSide front, std::optional<CardSide> back = std::nullopt);
 
-    virtual ~Card() = default;
+    ~Card() = default;
 
     Card(const Card&) = delete;
     Card& operator=(const Card&) = delete;
@@ -45,18 +44,13 @@ public:
     Card& operator=(Card&&) noexcept = default;
 
     // PUBLIC API
-    virtual CardValue play() = 0;
-    virtual bool isPlayable(const Card& card) const =0;
-
-    [[nodiscard]] bool isFlip() const;
-    CardSide front() const;
-    std::optional<CardSide> back() const;
+    [[nodiscard]] CardSide front() const;
+    [[nodiscard]] std::optional<CardSide> back() const;
 
 private:
     // DATA MEMBERS
     CardSide front_;
     std::optional<CardSide> back_;
-    bool flip_ = false;
 };
 
 #endif //SOURCECODE_CARD_H
