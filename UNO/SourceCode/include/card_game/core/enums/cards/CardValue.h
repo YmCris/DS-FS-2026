@@ -1,9 +1,13 @@
 //
 // Created by cristian on 2/14/26.
 //
+#pragma once
 
 enum class CardValue
 {
+    // NO FLIP SIDE
+    Null,
+
     // NUMBERS
     Zero,
     One,
@@ -25,6 +29,8 @@ enum class CardValue
     TheftThree,
     TheftSix,
 
+    TheftColor,
+
     // SKIP
     SkipNext,
 
@@ -37,4 +43,5 @@ enum class CardValue
     ColorWildCard,
 
     EternalColor,
+    Flip,
 };

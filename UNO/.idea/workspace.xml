@@ -30,8 +30,8 @@
     <list default="true" id="1404e908-f511-400e-99d1-b983a4188f79" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SourceCode/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SourceCode/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SourceCode/include/card_game/core/data_structures/linked_list/LinkedList.h" beforeDir="false" afterPath="$PROJECT_DIR$/SourceCode/include/card_game/core/data_structures/linked_list/LinkedList.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SourceCode/src/core/data_structures/linked_list/LinkedList.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SourceCode/include/card_game/domain/deck/Deck.h" beforeDir="false" afterPath="$PROJECT_DIR$/SourceCode/include/card_game/domain/deck/Deck.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SourceCode/src/domain/deck/Deck.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/SourceCode/src/domain/deck/Deck.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,6 +86,11 @@
   }
 }</component>
   <component name="RunManager">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="SourceCode" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SourceCode" TARGET_NAME="SourceCode" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="SourceCode" RUN_TARGET_NAME="SourceCode">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -110,6 +115,7 @@
       <workItem from="1771277083973" duration="392000" />
       <workItem from="1771277498204" duration="2040000" />
       <workItem from="1771279547778" duration="252000" />
+      <workItem from="1771373106655" duration="1074000" />
     </task>
     <servers />
   </component>

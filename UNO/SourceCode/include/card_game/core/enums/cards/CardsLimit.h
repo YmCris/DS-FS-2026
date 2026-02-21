@@ -16,6 +16,7 @@ enum class CardsLimit
 {
     // NUMBERS
     Zero = 4,
+    Number = 8,
     One = 8,
     Two = 8,
     Three = 8,
@@ -24,20 +25,23 @@ enum class CardsLimit
     Six = 8,
     Seven = 8,
     Eight = 8,
-    Nive = 8,
+    Nine = 8,
 
     // SKIP
-    Skip = 8,
+    SkipNext = 8,
     SkipAll = 8,
 
     // REVERSE
     Reverse = 8,
 
     // WILDS
-    PlusOne = 8,
-    PlusTwo = 8,
-    PlusFour = 4,
-    PlusColor = 4,
+    TheftOne = 8,
+    TheftTwo = 4,
+    TheftThree = 8,
+    TheftFour = 4,
+    TheftSix = 4,
+    TheftColor = 4,
+    // WILD CARD
     WildColor = 4,
 
     Flip = 8,

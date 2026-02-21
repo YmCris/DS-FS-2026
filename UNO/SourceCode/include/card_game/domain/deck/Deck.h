@@ -9,7 +9,6 @@
 #include "../../core/enums/cards/CardsLimit.h"
 #include "../card/Card.h"
 
-
 /**
 * The Deck class header is the class responsible for be the deck (main or the discard)
 * 
@@ -26,6 +25,8 @@ public:
     LinkedList<Card> createCards(int players);
     LinkedList<Card> shuffle(LinkedList<Card> cards);
     Stack<Card> stackCards(LinkedList<Card> cards);
+    LinkedList<Card> createNormalCards(const int players);
+    LinkedList<Card> createFlipCards(const int players);
     void add(Card card);
     Card remove();
 

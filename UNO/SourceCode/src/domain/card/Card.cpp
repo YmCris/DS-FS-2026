@@ -4,20 +4,42 @@
 
 #include "../../../include/card_game/domain/card/Card.h"
 
-// LIFETIME
-Card::Card(const CardColor color, const CardValue value) :
+// CARD SIDE
+Card::CardSide::CardSide(CardColor color, CardValue value) :
     color_(color),
     value_(value)
 {
 }
 
-// PUBLIC API
-CardColor Card::color() const
+[[nodiscard]] CardColor Card::CardSide::color() const
 {
     return color_;
 }
 
-CardValue Card::value() const
+[[nodiscard]] CardValue Card::CardSide::value() const
 {
     return value_;
+}
+
+// CARD
+Card::Card(CardSide front,
+           std::optional<CardSide> back) :
+    front_(front),
+    back_(back)
+{
+}
+
+Card::CardSide Card::front() const
+{
+    return front_;
+}
+
+std::optional<Card::CardSide> Card::back() const
+{
+    return back_;
+}
+
+void Card::setBack(CardSide back)
+{
+    back_ = back;
 }
