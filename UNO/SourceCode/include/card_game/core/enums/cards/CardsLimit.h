@@ -29,15 +29,15 @@ enum class CardsLimit
 
     // SKIP
     SkipNext = 8,
-    SkipAll = 8,
+    SkipAll = 4,
 
     // REVERSE
     Reverse = 8,
 
     // WILDS
-    TheftOne = 8,
-    TheftTwo = 4,
-    TheftThree = 8,
+    TheftOne = 12,
+    TheftTwo = 8,
+    TheftThree = 4,
     TheftFour = 4,
     TheftSix = 4,
     TheftColor = 4,

@@ -148,37 +148,51 @@ public:
         size_--;
     }
 
-    void removeFirst()
-    {
-        SimpleNode<T>* head = head_;
-        head_ = head->next();
-
-        delete head;
-
-        size_--;
-    }
-
-    void removeLast()
+    T removeFirst()
     {
         if (head_ == nullptr)
-            return;
+            throw std::logic_error("List is empty");
+
+        SimpleNode<T>* node = head_;
+        T value = node->value();
+
+        head_ = node->next();
+        delete node;
+
+        size_--;
+
+        return value;
+    }
+
+    T removeLast()
+    {
+        if (head_ == nullptr)
+            throw std::logic_error("List is empty");
 
         if (head_->next() == nullptr)
         {
+            T value = head_->value();
             delete head_;
             head_ = nullptr;
-        }
-        else
-        {
-            SimpleNode<T>* current = head_;
-            while (current->next()->next() != nullptr)
-                current = current->next();
+            --size_;
 
-            delete current->next();
-            current->setNext(nullptr);
+            return value;
         }
+
+        SimpleNode<T>* current = head_;
+        while (current->next()->next() != nullptr)
+        {
+            current = current->next();
+        }
+
+        SimpleNode<T>* last = current->next();
+        T value = last->value();
+
+        delete last;
+        current->setNext(nullptr);
 
         --size_;
+        return value;
     }
 
 

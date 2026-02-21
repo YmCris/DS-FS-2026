@@ -32,11 +32,11 @@ public:
         list_.addFirst(value);
     }
 
-    void pop()
-    {
+    T pop()
+    {//Change
         if (isEmpty()) throw std::logic_error("Stack is empty");
 
-        list_.removeFirst();
+        return list_.removeFirst();
     }
 
     T& peek()

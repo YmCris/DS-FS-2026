@@ -21,6 +21,7 @@ public:
     // LIFETIME
     Deck(int players, bool flipModeActive, LinkedList<Card*>& list);
     void createDeck();
+    void printCards();
 
 private:
     // DATA MEMBERS

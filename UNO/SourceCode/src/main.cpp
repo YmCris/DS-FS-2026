@@ -1,15 +1,17 @@
 #include <iostream>
 #include <ostream>
 
-#include "../include/card_game/application/card_creator/CardCreator.h"
+#include "../include/card_game/domain/deck/Deck.h"
 
 int main()
 {
-    CardCreator* creator = new CardCreator(5);
-    std::cout << "Normal cards" << std::endl;
-    creator->createNormalFlipCards();
-    //creator->createNormalCards();
-    creator->printCards(creator->list());
+    LinkedList<Card*> cards;
+
+    Deck deck(5, true, cards);
+    deck.printCards();
+    deck.peek();
+    Card* card = deck.pop();
+    deck.printCards();
 
     return 0;
 }

@@ -9,7 +9,7 @@ Deck::Deck(int players, bool flipModeActive, LinkedList<Card*>& list) :
     Stack<Card*>(list),
     players_(players),
     flipModeActive_(flipModeActive),
-    creator_(players)
+    creator_(list, players)
 {
     createDeck();
 }
@@ -24,4 +24,9 @@ void Deck::createDeck()
     {
         creator_.createNormalCards();
     }
+}
+
+void Deck::printCards()
+{
+    creator_.printCards();
 }
