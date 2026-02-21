@@ -237,6 +237,8 @@ public:
 
     SimpleNode<T>* getTail() const
     {
+        if (!head_) return nullptr;
+
         SimpleNode<T>* temp = head_;
         while (temp->next() != nullptr)
         {

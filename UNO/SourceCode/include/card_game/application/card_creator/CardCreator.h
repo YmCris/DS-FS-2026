@@ -12,14 +12,13 @@
 class CardCreator
 {
 public:
-    CardCreator(int players);
+    CardCreator(LinkedList<Card*>& originalList, int players);
 
     // CREATORS
     void printCards(LinkedList<Card*>& list);
     void createNormalCards();
     void createNormalFlipCards();
-    void createFlipCards();
-    void addFlipCards();
+
 
     LinkedList<Card*>& list();
     LinkedList<Card*>& flip();
@@ -40,13 +39,15 @@ private:
     void createFlipSkipCards();
     void createFlipWildColorCards();
 
+    void createFlipCards();
+    void addFlipCards();
+
     // AUXILIAR
     void createColorfulCard(LinkedList<Card*>& list,
                             CardColor colors[], CardsLimit cardLimit,
                             CardValue cardValue);
     void createBlackCard(LinkedList<Card*>& list, CardsLimit cardLimit,
                          CardValue cardValue);
-
 
     // DATA
     int players_ = 0;
