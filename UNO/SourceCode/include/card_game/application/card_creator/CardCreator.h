@@ -13,35 +13,54 @@ class CardCreator
 {
 public:
     CardCreator(int players);
-    // CREATORS
 
-    void printCards();
+    // CREATORS
+    void printCards(LinkedList<Card*>& list);
     void createNormalCards();
     void createNormalFlipCards();
     void createFlipCards();
+    void addFlipCards();
+
+    LinkedList<Card*>& list();
+    LinkedList<Card*>& flip();
 
 private:
     // RE UTILIZABLE
-    void createNumbersCards();
-    void createReverseCards();
+    void createNumbersCards(LinkedList<Card*>& list, CardColor color[]);
+    void createReverseCards(LinkedList<Card*>& list, CardColor color[]);
     // NORMAL
     void createColorWildCards();
     void createNormalTheftCards();
-    void createNormalSkipCards();
+    void createNormalSkipCards(CardColor color[]);
     // NORMAL FLIP
     void createNormalFlipTheftCards();
+    void createFlipChangeCards(LinkedList<Card*>& list);
     // FLIP
     void createFlipTheftCards();
     void createFlipSkipCards();
     void createFlipWildColorCards();
+
     // AUXILIAR
-    void createColorfulCard(CardsLimit cardLimit, CardValue cardValue);
-    void createBlackCard(CardsLimit cardLimit, CardValue cardValue);
+    void createColorfulCard(LinkedList<Card*>& list,
+                            CardColor colors[], CardsLimit cardLimit,
+                            CardValue cardValue);
+    void createBlackCard(LinkedList<Card*>& list, CardsLimit cardLimit,
+                         CardValue cardValue);
+
+
+    // DATA
+    int players_ = 0;
 
     LinkedList<Card*> list_;
-    int players_ = 0;
-    CardColor colors[4] = {
+    LinkedList<Card*> flip_;
+
+    CardColor normalColors_[4] = {
         CardColor::Red, CardColor::Yellow, CardColor::Blue, CardColor::Green
+    };
+
+    CardColor flipColors_[4] = {
+        CardColor::Pink, CardColor::Turquoise, CardColor::Orange,
+        CardColor::Violet
     };
 };
 

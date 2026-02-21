@@ -22,6 +22,8 @@ std::ostream& operator<<(std::ostream& os, CardValue value)
 
     case CardValue::Zero: os << "Zero";
         break;
+    case CardValue::TheftColor: os << "TheftColor";
+        break;
     case CardValue::One: os << "One";
         break;
     case CardValue::Two: os << "Two";
@@ -64,13 +66,14 @@ std::ostream& operator<<(std::ostream& os, CardValue value)
         break;
     case CardValue::EternalColor: os << "EternalColor";
         break;
+    case CardValue::Flip: os << "Flip";
+        break;
 
     default: os << "Unknown";
     }
 
     return os;
 }
-
 
 std::ostream& operator<<(std::ostream& os, CardColor color)
 {
@@ -102,38 +105,84 @@ std::ostream& operator<<(std::ostream& os, CardColor color)
     return os;
 }
 
-
-void CardCreator::printCards()
+void CardCreator::printCards(LinkedList<Card*>& list)
 {
-    for (int i = 0; i < list_.getSize(); ++i)
+    for (int i = 0; i < list.getSize(); ++i)
     {
-        CardValue value = list_.getAt(i)->value()->front().value();
-        CardColor color = list_.getAt(i)->value()->front().color();
-        std::cout << "Card: " << i << " " << value << " " << color << std::endl;
+        Card* card = list.getAt(i)->value();
+        CardValue value = card->front().value();
+        CardColor color = card->front().color();
+        std::cout << "-> Card: " << i << " " << value << " " << color << std::endl;
+        if (auto back = card->back())
+        {
+            CardValue backValue = back->value();
+            CardColor backColor = back->color();
+            std::cout << "<- Card: " << i << " " << backValue << " " << backColor
+                << std::endl;
+        }
     }
 }
 
 // CREATORS
-
 void CardCreator::createNormalCards()
 {
-    createNumbersCards();
-    createReverseCards();
-    createNormalTheftCards();
-    createColorWildCards();
-    createNormalSkipCards();
+    int decks = (players_ - 1) / 6 + 1;
+    for (int i = 0; i < decks; ++i)
+    {
+        createNumbersCards(list_, normalColors_);
+        createReverseCards(list_, normalColors_);
+        createNormalSkipCards(normalColors_);
+        createNormalTheftCards();
+        createColorWildCards();
+    }
+    list_.disorder();
 }
 
 void CardCreator::createNormalFlipCards()
 {
+    int decks = (players_ - 1) / 6 + 1;
+    for (int i = 0; i < decks; ++i)
+    {
+        createFlipChangeCards(list_);
+
+        createNumbersCards(list_, normalColors_);
+        createReverseCards(list_, normalColors_);
+        createNormalSkipCards(normalColors_);
+
+        createNormalFlipTheftCards();
+        createColorWildCards();
+    }
+    list_.disorder();
+    createFlipCards();
+    addFlipCards();
 }
 
 void CardCreator::createFlipCards()
 {
+    //1. Create flip cards
+    createFlipChangeCards(flip_);
+
+    createFlipTheftCards();
+    createFlipSkipCards();
+    createReverseCards(flip_, flipColors_);
+    createFlipWildColorCards();
+    createNumbersCards(flip_, flipColors_);
+
+    //2. Save the flip cards into a list "flip"
+    //3. Save in a different position
+}
+
+void CardCreator::addFlipCards()
+{
+    flip_.disorder();
+    for (int i = 0; i < list_.getSize(); ++i)
+    {
+        list_.getAt(i)->value()->setBack(flip_.getAt(i)->value()->front());
+    }
 }
 
 // RE UTILIZABLE
-void CardCreator::createNumbersCards()
+void CardCreator::createNumbersCards(LinkedList<Card*>& list, CardColor color[])
 {
     constexpr CardValue values[9] = {
         CardValue::One, CardValue::Two, CardValue::Three, CardValue::Four,
@@ -144,9 +193,9 @@ void CardCreator::createNumbersCards()
     // ZERO CARDS
     for (int i = 0; i < static_cast<int>(CardsLimit::Zero); i++)
     {
-        Card::CardSide front(colors[i], CardValue::Zero);
+        Card::CardSide front(color[i], CardValue::Zero);
         Card* card = new Card(front);
-        list_.addFirst(card);
+        list.addFirst(card);
     }
 
     // OTHER CARDS
@@ -158,9 +207,9 @@ void CardCreator::createNumbersCards()
         // CREATE 8 CARDS (2 of each Color)
         for (int i = 0; i < static_cast<int>(CardsLimit::Number); i++)
         {
-            Card::CardSide front(colors[colorAccounting], values[value]);
+            Card::CardSide front(color[colorAccounting], values[value]);
             Card* card = new Card(front);
-            list_.addFirst(card);
+            list.addFirst(card);
 
             colorAccounting++;
             if (colorAccounting == 3) colorAccounting = 0;
@@ -169,47 +218,63 @@ void CardCreator::createNumbersCards()
     }
 }
 
-void CardCreator::createReverseCards()
+void CardCreator::createReverseCards(LinkedList<Card*>& list, CardColor color[])
 {
-    createColorfulCard(CardsLimit::Reverse, CardValue::Revers);
+    createColorfulCard(list, color, CardsLimit::Reverse,
+                       CardValue::Revers);
 }
 
 // NORMAL
 void CardCreator::createColorWildCards()
 {
-    createBlackCard(CardsLimit::WildColor, CardValue::ColorWildCard);
+    createBlackCard(list_, CardsLimit::WildColor, CardValue::ColorWildCard);
 }
 
 void CardCreator::createNormalTheftCards()
 {
-    createColorfulCard(CardsLimit::TheftTwo, CardValue::TheftTwo);
-    createBlackCard(CardsLimit::TheftFour, CardValue::TheftFour);
+    createColorfulCard(list_, normalColors_, CardsLimit::TheftTwo,
+                       CardValue::TheftTwo);
+    createBlackCard(list_, CardsLimit::TheftFour, CardValue::TheftFour);
 }
 
-void CardCreator::createNormalSkipCards()
+void CardCreator::createNormalSkipCards(CardColor color[])
 {
-    createColorfulCard(CardsLimit::SkipNext, CardValue::SkipNext);
+    createColorfulCard(list_, color, CardsLimit::SkipNext,
+                       CardValue::SkipNext);
 }
 
 // NORMAL FLIP
 void CardCreator::createNormalFlipTheftCards()
 {
+    createBlackCard(list_, CardsLimit::TheftOne, CardValue::TheftOne);
+    createBlackCard(list_, CardsLimit::TheftTwo, CardValue::TheftTwo);
+}
+
+void CardCreator::createFlipChangeCards(LinkedList<Card*>& list)
+{
+    createBlackCard(list, CardsLimit::Flip, CardValue::Flip);
 }
 
 // FLIP
 void CardCreator::createFlipTheftCards()
 {
+    createBlackCard(flip_, CardsLimit::TheftThree, CardValue::TheftThree);
+    createBlackCard(flip_, CardsLimit::TheftSix, CardValue::TheftSix);
 }
 
 void CardCreator::createFlipSkipCards()
 {
+    createBlackCard(flip_, CardsLimit::SkipAll, CardValue::SkipAll);
 }
 
 void CardCreator::createFlipWildColorCards()
 {
+    createBlackCard(flip_, CardsLimit::TheftColor, CardValue::TheftColor);
 }
 
-void CardCreator::createColorfulCard(CardsLimit cardLimit, CardValue cardValue)
+void CardCreator::createColorfulCard(LinkedList<Card*>& list,
+                                     CardColor colors[],
+                                     CardsLimit cardLimit, CardValue cardValue)
 {
     int colorAccounting = 0;
 
@@ -218,19 +283,30 @@ void CardCreator::createColorfulCard(CardsLimit cardLimit, CardValue cardValue)
     {
         Card::CardSide front(colors[colorAccounting], cardValue);
         Card* card = new Card(front);
-        list_.addFirst(card);
+        list.addFirst(card);
 
         colorAccounting++;
         if (colorAccounting == 4) colorAccounting = 0;
     }
 }
 
-void CardCreator::createBlackCard(CardsLimit cardLimit, CardValue cardValue)
+void CardCreator::createBlackCard(LinkedList<Card*>& list, CardsLimit cardLimit,
+                                  CardValue cardValue)
 {
     for (int i = 0; i < static_cast<int>(cardLimit); i++)
     {
         Card::CardSide front(CardColor::Black, cardValue);
         Card* card = new Card(front);
-        list_.addFirst(card);
+        list.addFirst(card);
     }
+}
+
+LinkedList<Card*>& CardCreator::list()
+{
+    return list_;
+}
+
+LinkedList<Card*>& CardCreator::flip()
+{
+    return flip_;
 }

@@ -38,3 +38,8 @@ std::optional<Card::CardSide> Card::back() const
 {
     return back_;
 }
+
+void Card::setBack(CardSide back)
+{
+    back_ = back;
+}

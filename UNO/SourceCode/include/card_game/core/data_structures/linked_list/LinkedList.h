@@ -6,6 +6,9 @@
 #define SOURCECODE_LINKEDLIST_H
 
 #include <stdexcept>
+#include <vector>
+#include <algorithm>
+#include <random>
 
 #include "SimpleNode.h"
 
@@ -196,6 +199,35 @@ public:
         }
 
         return node;
+    }
+
+    void disorder()
+    {
+        if (size_ <= 1) return;
+
+        std::vector<T> elements;
+        elements.reserve(size_);
+
+        SimpleNode<T>* current = head_;
+        while (current != nullptr)
+        {
+            elements.push_back(current->value());
+            current = current->next();
+        }
+
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::shuffle(elements.begin(), elements.end(), gen);
+
+        current = head_;
+        int index = 0;
+
+        while (current != nullptr)
+        {
+            current->setValue(elements[index]);
+            current = current->next();
+            ++index;
+        }
     }
 
     SimpleNode<T>* getHead() const

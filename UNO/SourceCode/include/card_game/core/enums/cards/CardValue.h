@@ -29,6 +29,8 @@ enum class CardValue
     TheftThree,
     TheftSix,
 
+    TheftColor,
+
     // SKIP
     SkipNext,
 
@@ -41,4 +43,5 @@ enum class CardValue
     ColorWildCard,
 
     EternalColor,
+    Flip,
 };

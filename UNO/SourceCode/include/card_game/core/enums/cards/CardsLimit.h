@@ -36,8 +36,10 @@ enum class CardsLimit
 
     // WILDS
     TheftOne = 8,
-    TheftTwo = 8,
+    TheftTwo = 4,
+    TheftThree = 8,
     TheftFour = 4,
+    TheftSix = 4,
     TheftColor = 4,
     // WILD CARD
     WildColor = 4,

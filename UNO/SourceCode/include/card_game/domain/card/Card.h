@@ -47,6 +47,9 @@ public:
     [[nodiscard]] CardSide front() const;
     [[nodiscard]] std::optional<CardSide> back() const;
 
+    // SETTERS
+    void setBack(CardSide back);
+
 private:
     // DATA MEMBERS
     CardSide front_;
