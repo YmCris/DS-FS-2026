@@ -22,4 +22,6 @@ add_executable(SourceCode src/main.cpp
         include/card_game/core/enums/cards/CardsLimit.h
         src/application/card_creator/CardCreator.cpp
         include/card_game/application/card_creator/CardCreator.h
+        src/application/shuffle/Shuffle.cpp
+        include/card_game/application/shuffle/Shuffle.h
 )

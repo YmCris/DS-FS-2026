@@ -118,15 +118,17 @@ public:
         size_++;
     }
 
-    void removeFirst()
+    T removeFirst()
     {
-        if (isEmpty()) return;
+        if (isEmpty()) throw std::logic_error("List is empty");
 
         DoubleNode<T>* temp = head_;
+        T value = std::move(temp->value());
 
         if (size_ == 1)
         {
-            head_ = tail_ = nullptr;
+            head_ = nullptr;
+            tail_ = nullptr;
         }
         else
         {
@@ -136,13 +138,16 @@ public:
 
         delete temp;
         --size_;
+
+        return value;
     }
 
-    void removeLast()
+    T removeLast()
     {
-        if (isEmpty()) return;
+        if (isEmpty()) throw std::logic_error("List is empty");
 
         DoubleNode<T>* temp = tail_;
+        T value = std::move(temp->value());
 
         if (size_ == 1)
         {
@@ -157,25 +162,27 @@ public:
 
         delete temp;
         size_--;
+
+        return value;
     }
 
-    void removeAt(const int position)
+    T removeAt(const int position)
     {
         validateAccess(position);
 
         if (position == 0)
         {
-            removeFirst();
-            return;
+            return removeFirst();
         }
 
         if (position == size_ - 1)
         {
-            removeLast();
-            return;
+            return removeLast();
         }
 
         DoubleNode<T>* current = getAt(position);
+        T value = std::move(current->value());
+
         DoubleNode<T>* prev = current->prev();
         DoubleNode<T>* next = current->next();
 
@@ -184,6 +191,8 @@ public:
 
         delete current;
         size_--;
+
+        return value;
     }
 
     DoubleNode<T>* getAt(const int position) const

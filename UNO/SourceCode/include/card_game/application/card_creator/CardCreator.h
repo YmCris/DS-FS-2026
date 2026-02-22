@@ -12,47 +12,50 @@
 class CardCreator
 {
 public:
-    CardCreator(int players);
+    CardCreator(LinkedList<Card*>& originalList, int players);
 
     // CREATORS
-    void printCards(LinkedList<Card*>& list);
+    void printCards();
     void createNormalCards();
     void createNormalFlipCards();
-    void createFlipCards();
-    void addFlipCards();
-
-    LinkedList<Card*>& list();
-    LinkedList<Card*>& flip();
 
 private:
     // RE UTILIZABLE
-    void createNumbersCards(LinkedList<Card*>& list, CardColor color[]);
-    void createReverseCards(LinkedList<Card*>& list, CardColor color[]);
+    void createNumbersCards(CardColor color[]);
+    void createReverseCards(CardColor color[], bool flip);
+    void createNumbersFlipSides(CardColor color[]);
     // NORMAL
     void createColorWildCards();
     void createNormalTheftCards();
     void createNormalSkipCards(CardColor color[]);
     // NORMAL FLIP
     void createNormalFlipTheftCards();
-    void createFlipChangeCards(LinkedList<Card*>& list);
+    void createFlipChangeCards(bool flip);
     // FLIP
     void createFlipTheftCards();
     void createFlipSkipCards();
     void createFlipWildColorCards();
 
-    // AUXILIAR
-    void createColorfulCard(LinkedList<Card*>& list,
-                            CardColor colors[], CardsLimit cardLimit,
-                            CardValue cardValue);
-    void createBlackCard(LinkedList<Card*>& list, CardsLimit cardLimit,
-                         CardValue cardValue);
+    void createFlipCards();
+    void addFlipCards();
 
+    // AUXILIAR NORMAL
+    void createColorfulCard(CardColor colors[], CardsLimit cardLimit,
+                            CardValue cardValue);
+
+    void createBlackCard(CardsLimit cardLimit, CardValue cardValue);
+
+    // AUXILIAR FLIP
+    void createColorfulSides(CardColor colors[], CardsLimit cardLimit,
+                             CardValue cardValue);
+
+    void createBlackSides(CardsLimit cardLimit, CardValue cardValue);
 
     // DATA
     int players_ = 0;
 
-    LinkedList<Card*> list_;
-    LinkedList<Card*> flip_;
+    LinkedList<Card*>& list_;
+    LinkedList<Card::CardSide> flipSides_;
 
     CardColor normalColors_[4] = {
         CardColor::Red, CardColor::Yellow, CardColor::Blue, CardColor::Green
@@ -63,6 +66,5 @@ private:
         CardColor::Violet
     };
 };
-
 
 #endif //SOURCECODE_CARDCREATOR_H

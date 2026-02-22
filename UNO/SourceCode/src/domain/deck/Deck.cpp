@@ -5,46 +5,28 @@
 #include "../../../include/card_game/domain/deck/Deck.h"
 
 // PUBLIC API
-Deck::Deck(const bool flipModeActive, const int players)
-    : flipModeActive_(flipModeActive),
-      players_(players)
+Deck::Deck(int players, bool flipModeActive, LinkedList<Card*>& list) :
+    Stack<Card*>(list),
+    players_(players),
+    flipModeActive_(flipModeActive),
+    creator_(list, players)
 {
+    createDeck();
 }
 
-LinkedList<Card> Deck::createCards(int players)
+void Deck::createDeck()
 {
     if (flipModeActive_)
     {
-        return createFlipCards(players);
+        creator_.createNormalFlipCards();
     }
-
-    return createNormalCards(players);
+    else
+    {
+        creator_.createNormalCards();
+    }
 }
 
-LinkedList<Card> Deck::createNormalCards(int player)
+void Deck::printCards()
 {
-    LinkedList<Card> normalCards;
-
-}
-
-LinkedList<Card> Deck::createFlipCards(int player)
-{
-
-}
-
-LinkedList<Card> Deck::shuffle(LinkedList<Card> cards)
-{
-}
-
-Stack<Card> Deck::stackCards(LinkedList<Card> cards)
-{
-}
-
-// DATA MEMBERS
-void Deck::add(Card card)
-{
-}
-
-Card Deck::remove()
-{
+    creator_.printCards();
 }

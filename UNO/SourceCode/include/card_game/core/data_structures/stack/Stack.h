@@ -14,26 +14,34 @@
 * @since 2/17/26
 */
 template <typename T>
+/*FILO First in last out
+ * Ingres in the start
+ * Last
+ */
 class Stack
 {
 public:
+    Stack(LinkedList<T>& list) :
+        list_(list)
+    {
+    }
+
     // PUBLIC API
     void push(const T& value)
     {
         list_.addFirst(value);
     }
 
-    void pop()
-    {
+    T pop()
+    {//Change
         if (isEmpty()) throw std::logic_error("Stack is empty");
 
-        list_.removeFirst();
+        return list_.removeFirst();
     }
 
     T& peek()
     {
         if (isEmpty()) throw std::logic_error("Stack is empty");
-
         return list_.getHead()->value();
     }
 
@@ -49,7 +57,7 @@ public:
 
 private:
     // DATA MEMBERS
-    LinkedList<T> list_;
+    LinkedList<T>& list_;
 };
 
 #endif //SOURCECODE_STACK_H
