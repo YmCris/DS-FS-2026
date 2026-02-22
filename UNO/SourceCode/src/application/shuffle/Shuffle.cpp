@@ -14,12 +14,15 @@
 void Shuffle::organize()
 {
     // 1. Check if the list have the 7 start elements
-    // 2. Insert
+    /* card hierarchy
+     *
+     */
 }
 
 void Shuffle::addCard(Card* card)
 {
     /*INSERTION SORT*/
+    cards_.addLast(card);
 }
 
 Card* Shuffle::useCard(int position)
