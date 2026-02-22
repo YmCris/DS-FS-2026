@@ -24,4 +24,7 @@ add_executable(SourceCode src/main.cpp
         include/card_game/application/card_creator/CardCreator.h
         src/application/shuffle/Shuffle.cpp
         include/card_game/application/shuffle/Shuffle.h
+        src/domain/player/Player.cpp
+        include/card_game/domain/player/Player.h
+        src/domain/player/Player.cpp
 )
