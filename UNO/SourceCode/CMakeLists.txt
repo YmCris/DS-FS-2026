@@ -27,4 +27,6 @@ add_executable(SourceCode src/main.cpp
         src/domain/player/Player.cpp
         include/card_game/domain/player/Player.h
         src/domain/player/Player.cpp
+        src/application/match/MatchConfig.cpp
+        include/card_game/application/match/MatchConfig.h
 )
