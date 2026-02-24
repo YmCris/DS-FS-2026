@@ -32,4 +32,10 @@ add_executable(SourceCode src/main.cpp
         include/card_game/application/match/MatchConfig.h
         src/application/match/Match.cpp
         include/card_game/application/match/Match.h
+        src/infrastructure/menu/Menu.cpp
+        include/card_game/infrastructure/menu/Menu.h
+        src/infrastructure/options/Options.cpp
+        include/card_game/infrastructure/options/Options.h
+        src/infrastructure/game/Game.cpp
+        include/card_game/infrastructure/game/Game.h
 )
