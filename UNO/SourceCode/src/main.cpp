@@ -2,6 +2,9 @@
 
 #include "../include/card_game/application/match/Match.h"
 #include "../include/card_game/domain/deck/Deck.h"
+#include "../include/card_game/infrastructure/game/Game.h"
+#include "../include/card_game/infrastructure/menu/Menu.h"
+#include "../include/card_game/infrastructure/options/Options.h"
 
 int main()
 {
@@ -30,8 +33,13 @@ int main()
         }
     }
 
-
-    //Deck deck(5, true, cards);
+    Menu menu;
+    menu.showWellcome();
+    Options option;
+    option.showOptions();
+    Game game;
+    game.showTurn("Camilo");
+    game.showGameScreen("Cristian", "Pepe", "+2", "verde", "flip");
 
     return 0;
 }
