@@ -22,11 +22,10 @@ public:
     explicit Player(const std::string& name);
 
     // PUBLIC API
-    
     [[nodiscard]] bool blocked() const;
     [[nodiscard]] bool hadCards() const;
 
-    Shuffle* shuffle();
+    Shuffle& shuffle();
     std::string name();
 
 private:
@@ -34,7 +33,7 @@ private:
     bool blocked_;
     bool hasCards_;
 
-    Shuffle* shuffle_;
+    Shuffle shuffle_;
     std::string name_;
 };
 

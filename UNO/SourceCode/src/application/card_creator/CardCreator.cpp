@@ -8,11 +8,6 @@
 
 #include "../../../include/card_game/core/enums/cards/CardsLimit.h"
 
-CardCreator::CardCreator(LinkedList<Card*>& originalList, int players) :
-    players_(players),
-    list_(originalList)
-{
-}
 
 std::ostream& operator<<(std::ostream& os, CardValue value)
 {
@@ -106,6 +101,14 @@ std::ostream& operator<<(std::ostream& os, CardColor color)
     return os;
 }
 
+CardCreator::CardCreator(LinkedList<Card*>& originalList, int players,
+                         std::vector<Card*>& ownedCards) :
+    players_(players),
+    list_(originalList),
+    ownedCards_(ownedCards)
+{
+}
+
 void CardCreator::printCards()
 {
     for (int i = 0; i < list_.getSize(); ++i)
@@ -127,7 +130,7 @@ void CardCreator::printCards()
 }
 
 // CREATORS
-void CardCreator::createNormalCards()
+LinkedList<Card*>& CardCreator::createNormalCards()
 {
     int decks = (players_ - 1) / 6 + 1;
     for (int i = 0; i < decks; ++i)
@@ -139,9 +142,10 @@ void CardCreator::createNormalCards()
         createColorWildCards();
     }
     list_.disorder();
+    return list_;
 }
 
-void CardCreator::createNormalFlipCards()
+LinkedList<Card*>& CardCreator::createNormalFlipCards()
 {
     int decks = (players_ - 1) / 6 + 1;
     for (int i = 0; i < decks; ++i)
@@ -156,6 +160,7 @@ void CardCreator::createNormalFlipCards()
     list_.disorder();
     createFlipCards();
     addFlipCards();
+    return list_;
 }
 
 void CardCreator::createFlipCards()
@@ -200,6 +205,7 @@ void CardCreator::createNumbersCards(CardColor color[])
     {
         Card::CardSide front(color[i], CardValue::Zero);
         Card* card = new Card(front);
+        ownedCards_.push_back(card);
         list_.addFirst(card);
     }
 
@@ -214,6 +220,7 @@ void CardCreator::createNumbersCards(CardColor color[])
         {
             Card::CardSide front(color[colorAccounting], values[value]);
             Card* card = new Card(front);
+            ownedCards_.push_back(card);
             list_.addFirst(card);
 
             colorAccounting++;
@@ -336,6 +343,7 @@ void CardCreator::createColorfulCard(CardColor colors[], CardsLimit cardLimit,
     {
         Card::CardSide front(colors[colorAccounting], cardValue);
         Card* card = new Card(front);
+        ownedCards_.push_back(card);
         list_.addFirst(card);
 
         colorAccounting++;
@@ -349,6 +357,7 @@ void CardCreator::createBlackCard(CardsLimit cardLimit, CardValue cardValue)
     {
         Card::CardSide front(CardColor::Black, cardValue);
         Card* card = new Card(front);
+        ownedCards_.push_back(card);
         list_.addFirst(card);
     }
 }

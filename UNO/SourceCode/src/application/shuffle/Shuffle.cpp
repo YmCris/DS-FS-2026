@@ -11,6 +11,10 @@
 /**
  * This method only have to be used when create the deck
  */
+Shuffle::Shuffle()
+{
+}
+
 void Shuffle::organize()
 {
     // 1. Check if the list have the 7 start elements
