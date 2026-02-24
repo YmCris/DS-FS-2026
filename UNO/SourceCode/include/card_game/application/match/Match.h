@@ -37,6 +37,7 @@ public:
     CircularDoubleLinkedList<Player>& players();
 
     Deck& deck();
+    Stack<Card*>& discardDeck();
 
 private:
     // HELPERS
@@ -44,10 +45,11 @@ private:
     // DATA MEMBERS
     MatchConfig config_;
     std::vector<Card*> ownedCards_; // Save all
-    //I1 LinkedList<Card*> cards_; // Save the cards to use
+    LinkedList<Card*> discardCards_;
+    // Save the cards to use in the discard deck
 
     Deck deck_;
-    //Stack<Card*> discardDeck_;
+    Stack<Card*> discardDeck_;
     CircularDoubleLinkedList<Player> players_;
     int theftAccumulation_ = 0;
 };

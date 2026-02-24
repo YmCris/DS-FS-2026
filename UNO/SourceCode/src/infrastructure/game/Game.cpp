@@ -9,6 +9,7 @@
 // PUBLIC API
 void Game::showTurn(const std::string name)
 {
+    utilities_.clearScreen(100);
     std::cout << R"SCREEN(
 
 ┌------------------------------------------------------------------------------------------------------------------------------------------┐
@@ -40,12 +41,14 @@ void Game::showTurn(const std::string name)
 └------------------------------------------------------------------------------------------------------------------------------------------┘
 
 )SCREEN";
+    input_.waitForEnter();
 }
 
 void Game::showGameScreen(const std::string& playerTurn,
                           const std::string& next, const std::string& cardValue,
                           const std::string& cardColor, const std::string& mode)
 {
+    utilities_.clearScreen(100);
     std::cout << R"(
 
 ┌------------------------------------------------------------------------------------------------------------------------------------------┐

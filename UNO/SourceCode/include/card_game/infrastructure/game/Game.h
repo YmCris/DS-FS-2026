@@ -6,6 +6,9 @@
 #define SOURCECODE_GAME_H
 #include <string>
 
+#include "../../core/data_input/DataInput.h"
+#include "../../core/utilities/Utilities.h"
+
 
 /**
 * The Game class header is the class responsible for 
@@ -18,10 +21,14 @@ class Game
 public:
     // PUBLIC API
     void showTurn(const std::string name);
-    void showGameScreen(const std::string& playerTurn,const std::string& next,
+    void showGameScreen(const std::string& playerTurn, const std::string& next,
                         const std::string& cardValue,
                         const std::string& cardColor,
                         const std::string& mode);
+
+private:
+    Utilities utilities_;
+    DataInput input_;
 };
 
 

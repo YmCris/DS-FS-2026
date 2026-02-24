@@ -5,6 +5,7 @@
 #ifndef SOURCECODE_ENGINE_H
 #define SOURCECODE_ENGINE_H
 #include "../../core/data_input/DataInput.h"
+#include "../../core/utilities/Utilities.h"
 #include "../../infrastructure/game/Game.h"
 #include "../../infrastructure/menu/Menu.h"
 #include "../../infrastructure/options/Options.h"
@@ -25,6 +26,7 @@ public:
     void startApp();
     void startGame();
     void play(std::vector<int> options);
+    void playerOption(int option);
 
 private:
     // DATA MEMBERS
@@ -35,6 +37,9 @@ private:
 
     /* VALIDATION */
     DataInput input_;
+
+    /* UTILITIES */
+    Utilities utilities_;
 };
 
 
