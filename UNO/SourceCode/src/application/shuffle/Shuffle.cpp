@@ -48,9 +48,9 @@ void Shuffle::printFront()
     Utilities utilities;
     for (int i = 0; i < cards_.getSize(); ++i)
     {
-        std::cout << i << ") " << utilities.valueToString(
+        std::cout << "   (" << i << ") " << utilities.valueToString(
                 cards_.getAt(i)->value()->front().value())
-            << utilities.colorToString(
+            << " - " << utilities.colorToString(
                 cards_.getAt(i)->value()->front().color()) << std::endl;
     }
 }
@@ -60,9 +60,9 @@ void Shuffle::printBack()
     Utilities utilities;
     for (int i = 0; i < cards_.getSize(); ++i)
     {
-        std::cout << "(" << i << ") " << utilities.valueToString(
+        std::cout << "   (" << i << ") " << utilities.valueToString(
                 cards_.getAt(i)->value()->back()->value())
-            << " "<<utilities.colorToString(
+            << " " << utilities.colorToString(
                 cards_.getAt(i)->value()->back()->color()) << std::endl;
     }
 }

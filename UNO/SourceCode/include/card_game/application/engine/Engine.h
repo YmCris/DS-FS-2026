@@ -6,9 +6,11 @@
 #define SOURCECODE_ENGINE_H
 #include "../../core/data_input/DataInput.h"
 #include "../../core/utilities/Utilities.h"
+#include "../../infrastructure/cards/CardsView.h"
 #include "../../infrastructure/game/Game.h"
 #include "../../infrastructure/menu/Menu.h"
 #include "../../infrastructure/options/Options.h"
+#include "../match/Match.h"
 
 
 /**
@@ -26,7 +28,13 @@ public:
     void startApp();
     void startGame();
     void play(std::vector<int> options);
-    void playerOption(int option);
+    void playerOption(Match& match, int playerInTurn, bool& rightRotation,
+                      bool flip, bool& gameOver);
+    void createPlayers(int players, Match& match);
+    void useUserFLipCards(Player& player, Match& match);
+    void useUserNormalCards(Player& player, Match& match);
+    std::string getCurrentCardColor(Match& match, bool flip);
+    std::string getCurrentCardValue(Match& match, bool flip);
 
 private:
     // DATA MEMBERS
@@ -34,6 +42,7 @@ private:
     Game game_;
     Menu menu_;
     Options options_;
+    CardsView view_;
 
     /* VALIDATION */
     DataInput input_;

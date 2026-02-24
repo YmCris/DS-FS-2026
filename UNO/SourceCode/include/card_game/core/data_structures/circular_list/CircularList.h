@@ -247,13 +247,13 @@ private:
     void validateInsert(const int position) const
     {
         if (position < 0 || position > size_)
-            throw std::out_of_range("Invalid position to add");
+            throw std::out_of_range("Invalid position to add: "+std::to_string(position));
     }
 
     void validateAccess(const int position) const
     {
         if (position < 0 || position >= size_)
-            throw std::out_of_range("Invalid position");
+            throw std::out_of_range("Invalid position to access: "+std::to_string(position));
     }
 
     DoubleNode<T>* head_ = nullptr;

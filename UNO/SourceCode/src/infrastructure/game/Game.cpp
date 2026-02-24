@@ -46,7 +46,9 @@ void Game::showTurn(const std::string name)
 
 void Game::showGameScreen(const std::string& playerTurn,
                           const std::string& next, const std::string& cardValue,
-                          const std::string& cardColor, const std::string& mode)
+                          const std::string& cardColor, const std::string& mode,
+                          const std::string& cardsInDeck,
+                          const std::string& cardsInDiscard)
 {
     utilities_.clearScreen(100);
     std::cout << R"(
@@ -75,10 +77,16 @@ void Game::showGameScreen(const std::string& playerTurn,
 ¦                                @################@@@@@@@@@@@@@@@@@@                                                                       ¦
 ¦                                @@@@@#########@@@@@@@@@@@@@@@@@@@@@                                                                       ¦
 ¦                                @@@@@@@@@@@@@@@@@@@@@@@@@@@@@&,%,&%@                                                                      ¦
-¦                                                                                                                                          ¦
+                                 Deck: )";
+
+    std::cout << cardsInDeck
+              << "          Discard: "
+              << cardsInDiscard;
+
+    std::cout << R"(
 ¦                                                                                                                                          ¦
 ├---------------------------------------------┐                                                                                            ¦
-¦ SELECCIONE UNA OPCIÓN:                      ¦   Turno: ")";
+¦ SELECCIONE UNA OPCIÓN:                      ¦   Turno: )";
 
     std::cout << playerTurn
         << "\" Siguiente: \"" << next
@@ -89,10 +97,10 @@ void Game::showGameScreen(const std::string& playerTurn,
     std::cout << R"("                                                       ¦
 ├---------------------------------------------┘--------------------------------------------------------------------------------------------┤
 ¦                                                                                                                                          ¦
-¦        ┌------------------------┐   ┌------------------------┐   ┌------------------------┐   ┌------------------------┐                 ¦
-¦        ¦      JUGAR CARTA       ¦   ¦          RETAR         ¦   ¦          "UNO"         ¦   ¦        REPORTAR        ¦                 ¦
-¦        ¦          [1]           ¦   ¦           [2]          ¦   ¦           [3]          ¦   ¦           [4]          ¦                 ¦
-¦        └------------------------┘   └------------------------┘   └------------------------┘   └------------------------┘                 ¦
+¦   ┌----------------------┐   ┌----------------------┐   ┌--------------------┐   ┌----------------------┐    ┌----------------------┐    ¦
+¦   ¦     JUGAR CARTA      ¦   ¦         RETAR        ¦   ¦       "UNO"        ¦   ¦       REPORTAR       ¦    ¦         SALIR        ¦    ¦
+¦   ¦         [1]          ¦   ¦          [2]         ¦   ¦        [3]         ¦   ¦          [4]         ¦    ¦          [5]         ¦    ¦
+¦   └----------------------┘   └----------------------┘   └--------------------┘   └----------------------┘    └----------------------┘    ¦
 ¦                                                                                                                                          ¦
 └------------------------------------------------------------------------------------------------------------------------------------------┘
 

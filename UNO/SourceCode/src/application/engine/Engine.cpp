@@ -34,7 +34,6 @@ void Engine::startApp()
             break;
         case 2:
             std::exit(0);
-            break;
         default:
             std::cout << "Invalid option, try again" << std::endl;
             input_.waitForEnter();
@@ -63,7 +62,7 @@ void Engine::startGame()
 void Engine::play(std::vector<int> options)
 {
     //1. Set the match config
-    MatchConfig config(
+    const MatchConfig config(
         input_.integerToBoolean(options[1]),
         input_.integerToBoolean(options[2]),
         input_.integerToBoolean(options[3]),
@@ -74,97 +73,159 @@ void Engine::play(std::vector<int> options)
 
     // 2. Create the match
     Match match(config, options[0]);
+
     // 3. Create the cards and add to deck
     match.deck().createCards();
 
     // 4. Create players and add to the circular list
+    createPlayers(options[0], match);
+
+    // 5. Add cards to every player's shuffle
+    match.setCardsToPlayers();
+
+    // 6. Define the initial player
+    int playerInTurn = utilities_.getRandomInteger(
+        0, match.players().getSize() - 1);
+
+    // 7. Set initial rotation
+    bool rightRotation = utilities_.rightRotation();
+
+    // 8. Set initial Card
+    match.discardDeck().push(match.deck().pop());
+
+    // 9. Set the game over condition
+    int lastPlayer = playerInTurn;
+    bool gameOver = false;
+    bool flip = input_.integerToBoolean(options[1]);
+    while (!gameOver)
+    {
+        // a) Set the next player (based in the rotation)
+        int next = utilities_.getNext(rightRotation, playerInTurn,
+                                      match.players().getSize());
+
+        // b) Show the players turn
+        game_.showTurn(match.players().getAt(playerInTurn)->value().name());
+
+        // c) Show the game with the info
+        game_.showGameScreen(
+            match.players().getAt(playerInTurn)->value().name(),
+            match.players().getAt(next)->value().name(),
+            getCurrentCardValue(match, flip),
+            getCurrentCardColor(match, flip),
+            std::to_string(options[1]), std::to_string(match.deck().size()),
+            std::to_string(match.discardDeck().size())
+        );
+
+        // d) catch the user option
+        playerOption(match, playerInTurn, rightRotation, flip, gameOver);
+        lastPlayer = playerInTurn;
+        // e) Set the new player in turn
+        playerInTurn = next;
+    }
+    std::cout << "Ganador: " << match.players().getAt(lastPlayer)->value().
+                                      name() << std::endl;
+}
+
+void Engine::playerOption(Match& match, int playerInTurn, bool& rightRotation,
+                          bool flip, bool& gameOver)
+{
+    Player& player = match.players().getAt(playerInTurn)->value();
+    switch (input_.requestInteger())
+    {
+    case 1:
+        {
+            view_.showRoof();
+            if (flip)
+            {
+                useUserFLipCards(player, match);
+            }
+            else
+            {
+                useUserNormalCards(player, match);
+            }
+
+            if (player.shuffle().cards().getSize() == 0) gameOver = true;
+
+            break;
+        }
+    case 2:
+        {
+            rightRotation = !rightRotation;
+            break;
+        }
+    case 3:
+        {
+            std::cout << std::endl;
+            break;
+        }
+    case 4:
+        {
+            break;
+        }
+    case 5:
+        {
+            std::exit(0);
+        }
+    default:
+        {
+            break;
+        }
+    }
+}
+
+void Engine::useUserFLipCards(Player& player, Match& match)
+{
+    player.shuffle().printBack();
+    view_.showFloor();
+
+    const int selectedCard = input_.requestInteger();
+    match.discardDeck().push(
+        player.shuffle().useCard(
+            selectedCard));
+}
+
+void Engine::useUserNormalCards(Player& player, Match& match)
+{
+    player.shuffle().printFront();
+    view_.showFloor();
+
+    const int selectedCard = input_.requestInteger();
+
+    match.discardDeck().push(
+        player.shuffle().useCard(
+            selectedCard));
+}
+
+std::string Engine::getCurrentCardColor(Match& match, bool flip)
+{
+    if (flip)
+    {
+        return utilities_.colorToString(
+            match.discardDeck().peek()->back()->color());
+    }
+    return utilities_.colorToString(
+        match.discardDeck().peek()->front().color());
+}
+
+std::string Engine::getCurrentCardValue(Match& match, bool flip)
+{
+    if (flip)
+    {
+        return utilities_.valueToString(
+            match.discardDeck().peek()->back()->value());
+    }
+    return utilities_.
+        valueToString(match.discardDeck().peek()->front().value());
+}
+
+void Engine::createPlayers(int players, Match& match)
+{
     utilities_.clearScreen(100);
-    for (int i = 0; i < options[0]; ++i)
+    for (int i = 0; i < players; ++i)
     {
         std::cout << "Ingresa el nombre del jugador " << (i + 1) << ":" <<
             std::endl;
         std::string name = input_.requestString();
         match.createPlayer(name);
-    }
-    // 5. Add cards to every player's shuffle
-    match.setCardsToPlayers();
-
-    // 6. Define the initial player and the rotation
-    int playerInTurn = utilities_.getRandomInteger(
-        0, match.players().getSize() - 1);
-    bool rightRotation = utilities_.rightRotation();
-
-    // 7.
-    match.discardDeck().push(match.deck().pop());
-    Card* card = match.seeTurnCard();
-
-    // 8. Set the game over condition
-    int next;
-    bool gameOver = false;
-    while (!gameOver)
-    {
-        game_.showTurn(
-            match.players().getAt(playerInTurn)->value().name());
-
-        if (rightRotation)
-        {
-            playerInTurn++;
-            next = playerInTurn++;
-        }
-        else
-        {
-            playerInTurn--;
-            next = playerInTurn--;
-        }
-
-        game_.showGameScreen(
-            match.players().getAt(playerInTurn)->value().name()
-            , match.players().getAt(next)->value().name(),
-            utilities_.valueToString(card->front().value()),
-            utilities_.colorToString(card->front().color()),
-            "flip"
-        );
-        int option = input_.requestInteger();
-        switch (option)
-        {
-        case 1:
-            {
-                match.players().getAt(playerInTurn)->value().shuffle().printFront();
-            }
-        case 2:
-            {
-            }
-        case 3:
-            {
-            }
-        case 4:
-            {
-            }
-        default:
-            {
-            }
-        }
-    }
-}
-
-void Engine::playerOption(int option)
-{
-    switch (option)
-    {
-    case 1:
-        {
-        }
-    case 2:
-        {
-        }
-    case 3:
-        {
-        }
-    case 4:
-        {
-        }
-    default:
-        {
-        }
     }
 }

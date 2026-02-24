@@ -28,6 +28,7 @@ public:
     int getRandomInteger(int lowerLimit, int upperLimit);
     void clearScreen(int lines);
     bool rightRotation();
+    int getNext(bool rightRotation, int current, int listSize);
     std::string colorToString(CardColor color);
     std::string valueToString(CardValue value);
 };

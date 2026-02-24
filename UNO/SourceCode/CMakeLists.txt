@@ -45,4 +45,6 @@ add_executable(SourceCode src/main.cpp
         include/card_game/application/engine/Engine.h
         src/core/utilities/Utilities.cpp
         include/card_game/core/utilities/Utilities.h
+        src/infrastructure/cards/CardsView.cpp
+        include/card_game/infrastructure/cards/CardsView.h
 )

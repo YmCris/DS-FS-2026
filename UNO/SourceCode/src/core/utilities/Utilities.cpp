@@ -29,6 +29,24 @@ bool Utilities::rightRotation()
     return getRandomInteger(0, 1);
 }
 
+int Utilities::getNext(bool rightRotation, int current, int listSize)
+{
+    if (rightRotation)
+    {
+        if (current == listSize - 1)
+        {
+            return 0;
+        }
+        return ++current;
+    }
+    // Left Rotation
+    if (current == 0)
+    {
+        return listSize - 1;
+    }
+    return --current;
+}
+
 std::string Utilities::colorToString(CardColor color)
 {
     switch (color)

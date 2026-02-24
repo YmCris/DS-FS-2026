@@ -24,7 +24,8 @@ public:
     void showGameScreen(const std::string& playerTurn, const std::string& next,
                         const std::string& cardValue,
                         const std::string& cardColor,
-                        const std::string& mode);
+                        const std::string& mode, const std::string& cardsInDeck,
+                        const std::string& cardsInDiscard);
 
 private:
     Utilities utilities_;
