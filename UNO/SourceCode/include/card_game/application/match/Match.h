@@ -24,8 +24,8 @@ public:
 
     ~Match()
     {
-        for (Card* c : ownedCards_)
-            delete c;
+        for (Card* card : ownedCards_)
+            delete card;
     }
 
     // PUBLIC API

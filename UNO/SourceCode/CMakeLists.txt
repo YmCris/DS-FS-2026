@@ -38,4 +38,9 @@ add_executable(SourceCode src/main.cpp
         include/card_game/infrastructure/options/Options.h
         src/infrastructure/game/Game.cpp
         include/card_game/infrastructure/game/Game.h
+        src/core/exceptions/UserInputException.cpp
+        src/core/data_input/DataInput.cpp
+        include/card_game/core/data_input/DataInput.h
+        src/application/engine/Engine.cpp
+        include/card_game/application/engine/Engine.h
 )
