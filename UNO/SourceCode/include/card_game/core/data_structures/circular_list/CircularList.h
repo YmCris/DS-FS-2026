@@ -52,7 +52,7 @@ public:
         return head_->prev();
     }
 
-    void addFirst(T& value)
+    void addFirst(const T& value)
     {
         DoubleNode<T>* node = new DoubleNode<T>(value);
 

@@ -5,10 +5,9 @@
 #include "../../../include/card_game/application/match/MatchConfig.h"
 
 // LIFETIME
-MatchConfig::MatchConfig(int players, bool flip, bool multiTwoResponse,
+MatchConfig::MatchConfig(bool flip, bool multiTwoResponse,
                          bool multiFourResponse, bool challenge,
                          bool multiSteal, bool winWithBlack) :
-    players_(players),
     flip_(flip),
     multiTwoResponse_(multiTwoResponse),
     multiFourResponse_(multiFourResponse),
@@ -19,11 +18,6 @@ MatchConfig::MatchConfig(int players, bool flip, bool multiTwoResponse,
 }
 
 // PUBLIC API
-int MatchConfig::players() const
-{
-    return players_;
-}
-
 bool MatchConfig::flip() const
 {
     return flip_;

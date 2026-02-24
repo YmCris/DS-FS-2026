@@ -20,10 +20,10 @@ class DoubleLinkedList
 public:
     // LIFETIME
     DoubleLinkedList() = default;
-
+/*
     DoubleLinkedList(const DoubleLinkedList&) = delete;
     DoubleLinkedList& operator=(const DoubleLinkedList&) = delete;
-
+*/
     explicit DoubleLinkedList(T value)
     {
         addFirst(value);

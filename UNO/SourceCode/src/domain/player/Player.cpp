@@ -5,7 +5,9 @@
 #include "../../../include/card_game/domain/player/Player.h"
 
 // LIFETIME
-Player::Player(const std::string& name):
+Player::Player(const std::string& name) :
+    blocked_(false),
+    hasCards_(true),
     name_(name)
 {
 }
@@ -14,7 +16,7 @@ Player::Player(const std::string& name):
 
 bool Player::blocked() const
 {
-    return  blocked_;
+    return blocked_;
 }
 
 bool Player::hadCards() const
@@ -22,7 +24,7 @@ bool Player::hadCards() const
     return hasCards_;
 }
 
-Shuffle* Player::shuffle()
+Shuffle& Player::shuffle()
 {
     return shuffle_;
 }

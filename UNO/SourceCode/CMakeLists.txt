@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.26)
 project(SourceCode)
 
 set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address,undefined -fno-omit-frame-pointer -g")
 
 add_executable(SourceCode src/main.cpp
         src/domain/card/Card.cpp
@@ -29,4 +30,6 @@ add_executable(SourceCode src/main.cpp
         src/domain/player/Player.cpp
         src/application/match/MatchConfig.cpp
         include/card_game/application/match/MatchConfig.h
+        src/application/match/Match.cpp
+        include/card_game/application/match/Match.h
 )

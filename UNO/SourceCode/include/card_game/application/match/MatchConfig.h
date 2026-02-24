@@ -16,13 +16,12 @@ class MatchConfig
 {
 public:
     // LIFETIME
-    MatchConfig(int players, bool flip, bool multiTwoResponse,
+    MatchConfig(bool flip, bool multiTwoResponse,
                 bool multiFourResponse, bool challenge, bool multiSteal,
                 bool winWithBlack
     );
 
     // PUBLIC API
-    [[nodiscard]] int players() const;
     [[nodiscard]] bool flip() const;
     [[nodiscard]] bool multiTwoResponse() const;
     [[nodiscard]] bool multiFourResponse() const;
@@ -32,7 +31,6 @@ public:
 
 private:
     // DATA MEMBERS
-    int players_;
     bool flip_;
 
     /*RULES*/

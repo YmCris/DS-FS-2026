@@ -19,14 +19,17 @@ class Deck final : public Stack<Card*>
 {
 public:
     // LIFETIME
-    Deck(int players, bool flipModeActive, LinkedList<Card*>& list);
-    void createDeck();
+    Deck(int players, bool flipModeActive, //I1 LinkedList<Card*>& list,
+         std::vector<Card*>& ownedCards);
+
+    void createCards();
     void printCards();
 
 private:
     // DATA MEMBERS
     int players_;
     bool flipModeActive_;
+    LinkedList<Card*> cards_; //I1
     CardCreator creator_;
 };
 

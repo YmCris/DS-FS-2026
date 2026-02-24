@@ -12,12 +12,13 @@
 class CardCreator
 {
 public:
-    CardCreator(LinkedList<Card*>& originalList, int players);
+    CardCreator(LinkedList<Card*>& originalList, int players,
+                std::vector<Card*>& ownedCards);
 
     // CREATORS
     void printCards();
-    void createNormalCards();
-    void createNormalFlipCards();
+    LinkedList<Card*>& createNormalCards();
+    LinkedList<Card*>& createNormalFlipCards();
 
 private:
     // RE UTILIZABLE
@@ -55,6 +56,7 @@ private:
     int players_ = 0;
 
     LinkedList<Card*>& list_;
+    std::vector<Card*>& ownedCards_;
     LinkedList<Card::CardSide> flipSides_;
 
     CardColor normalColors_[4] = {
