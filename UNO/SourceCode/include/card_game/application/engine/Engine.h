@@ -33,6 +33,8 @@ public:
     void createPlayers(int players, Match& match);
     void useUserFLipCards(Player& player, Match& match);
     void useUserNormalCards(Player& player, Match& match);
+    bool cardsAreCompatible(Card::CardSide currentSide,
+                            Card::CardSide selectedSide);
     std::string getCurrentCardColor(Match& match, bool flip);
     std::string getCurrentCardValue(Match& match, bool flip);
 

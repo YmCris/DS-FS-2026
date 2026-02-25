@@ -96,7 +96,7 @@ void Engine::play(std::vector<int> options)
     // 9. Set the game over condition
     int lastPlayer = playerInTurn;
     bool gameOver = false;
-    bool flip = input_.integerToBoolean(options[1]);
+    bool flip = false;
     while (!gameOver)
     {
         // a) Set the next player (based in the rotation)
@@ -132,18 +132,22 @@ void Engine::playerOption(Match& match, int playerInTurn, bool& rightRotation,
     Player& player = match.players().getAt(playerInTurn)->value();
     switch (input_.requestInteger())
     {
-    case 1:
+    case 1: // Put card
         {
             view_.showRoof();
+            // a) is flip mode active?
             if (flip)
             {
+                // b) Use flip cards
                 useUserFLipCards(player, match);
             }
             else
             {
+                // b) Use normal cards (Normal and normal flip)
                 useUserNormalCards(player, match);
             }
 
+            // d) player has cards?
             if (player.shuffle().cards().getSize() == 0) gameOver = true;
 
             break;
@@ -168,6 +172,7 @@ void Engine::playerOption(Match& match, int playerInTurn, bool& rightRotation,
         }
     default:
         {
+            std::cout << "Invalid option" << std::endl;
             break;
         }
     }
@@ -179,9 +184,19 @@ void Engine::useUserFLipCards(Player& player, Match& match)
     view_.showFloor();
 
     const int selectedCard = input_.requestInteger();
-    match.discardDeck().push(
-        player.shuffle().useCard(
-            selectedCard));
+
+    if (cardsAreCompatible(match.discardDeck().peek()->back().value(),
+                           player.shuffle().cards().getAt(selectedCard)->value()
+                                 ->back().value()))
+    {
+        match.discardDeck().push(
+            player.shuffle().useCard(
+                selectedCard));
+        std::cout << "Are compatible" << std::endl;
+        return;
+    }
+
+    std::cout << " NO Are compatible" << std::endl;
 }
 
 void Engine::useUserNormalCards(Player& player, Match& match)
@@ -191,10 +206,26 @@ void Engine::useUserNormalCards(Player& player, Match& match)
 
     const int selectedCard = input_.requestInteger();
 
-    match.discardDeck().push(
-        player.shuffle().useCard(
-            selectedCard));
+    if (cardsAreCompatible(match.discardDeck().peek()->front(),
+                           player.shuffle().cards().getAt(selectedCard)->value()
+                                 ->front()))
+    {
+        match.discardDeck().push(
+            player.shuffle().useCard(
+                selectedCard));
+        std::cout << "Are compatible" << std::endl;
+        return;
+    }
+    std::cout << " NO Are compatible" << std::endl;
 }
+
+bool Engine::cardsAreCompatible(Card::CardSide currentSide,
+                                Card::CardSide selectedSide)
+{
+    return currentSide.value() == selectedSide.value()
+        || currentSide.color() == selectedSide.color();
+}
+
 
 std::string Engine::getCurrentCardColor(Match& match, bool flip)
 {
