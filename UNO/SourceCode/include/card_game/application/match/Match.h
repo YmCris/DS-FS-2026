@@ -38,6 +38,7 @@ public:
 
     Deck& deck();
     Stack<Card*>& discardDeck();
+    MatchConfig& config();
 
 private:
     // HELPERS

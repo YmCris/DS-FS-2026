@@ -31,15 +31,21 @@ public:
     void playerOption(Match& match, int playerInTurn, bool& rightRotation,
                       bool flip, bool& gameOver);
     void createPlayers(int players, Match& match);
+    bool playerHadMoreCards(Player& player, Card& card, bool flip);
     void useUserFLipCards(Player& player, Match& match);
     void useUserNormalCards(Player& player, Match& match);
     bool cardsAreCompatible(Card::CardSide currentSide,
                             Card::CardSide selectedSide);
+    void useUserBlackCard(Card::CardSide selectedSide, bool flip);
+    void requestNewColor(bool flip);
     std::string getCurrentCardColor(Match& match, bool flip);
     std::string getCurrentCardValue(Match& match, bool flip);
 
 private:
     // DATA MEMBERS
+    int accumulation_ = 0;
+    std::optional<CardColor> color_ = std::nullopt;
+
     /* FRONTEND */
     Game game_;
     Menu menu_;

@@ -29,6 +29,8 @@ public:
     void clearScreen(int lines);
     bool rightRotation();
     int getNext(bool rightRotation, int current, int listSize);
+    int getPrevious(bool rightRotation, int current, int listSize);
+    std::optional<CardColor> stringToColor(std::string str);
     std::string colorToString(CardColor color);
     std::string valueToString(CardValue value);
 };

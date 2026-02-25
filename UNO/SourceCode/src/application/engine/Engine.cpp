@@ -130,52 +130,182 @@ void Engine::playerOption(Match& match, int playerInTurn, bool& rightRotation,
                           bool flip, bool& gameOver)
 {
     Player& player = match.players().getAt(playerInTurn)->value();
-    switch (input_.requestInteger())
+    bool success = false;
+    do
     {
-    case 1: // Put card
+        switch (input_.requestInteger())
         {
-            view_.showRoof();
-            // a) is flip mode active?
-            if (flip)
+        case 1: // Put card
             {
-                // b) Use flip cards
-                useUserFLipCards(player, match);
+                view_.showRoof();
+                // a) is flip mode active?
+                if (flip)
+                {
+                    // b) Use flip cards
+                    useUserFLipCards(player, match);
+                }
+                else
+                {
+                    // b) Use normal cards (Normal and normal flip)
+                    useUserNormalCards(player, match);
+                }
+
+                // d) player has cards?
+                if (player.shuffle().cards().getSize() == 0) gameOver = true;
+
+                break;
             }
-            else
+        case 2:
             {
-                // b) Use normal cards (Normal and normal flip)
-                useUserNormalCards(player, match);
+                if (match.config().challenge())
+                {
+                    if (accumulation_ == 4)
+                    {
+                        int prev = utilities_.getPrevious(
+                            rightRotation, playerInTurn,
+                            match.players().getSize());
+                        std::cout << "Reto" << std::endl;
+
+                        if (playerHadMoreCards(
+                            match.players().getAt(prev)->value(),
+                            *match.deck().peek(), flip))
+                        {
+                            std::cout << "The user had another card, theft +4";
+                            match.players().getAt(prev)->value().shuffle().
+                                  addCard(
+                                      match.deck().pop());
+                            match.players().getAt(prev)->value().shuffle().
+                                  addCard(
+                                      match.deck().pop());
+                            match.players().getAt(prev)->value().shuffle().
+                                  addCard(
+                                      match.deck().pop());
+                            match.players().getAt(prev)->value().shuffle().
+                                  addCard(
+                                      match.deck().pop());
+                        }
+                        else
+                        {
+                            std::cout <<
+                                "The usern't had another card, you theft +6";
+                            match.players().getAt(playerInTurn)->value().
+                                  shuffle().
+                                  addCard(
+                                      match.deck().pop());
+                            match.players().getAt(playerInTurn)->value().
+                                  shuffle().
+                                  addCard(
+                                      match.deck().pop());
+                            match.players().getAt(playerInTurn)->value().
+                                  shuffle().
+                                  addCard(
+                                      match.deck().pop());
+                            match.players().getAt(playerInTurn)->value().
+                                  shuffle().
+                                  addCard(
+                                      match.deck().pop());
+                            match.players().getAt(playerInTurn)->value().
+                                  shuffle().
+                                  addCard(
+                                      match.deck().pop());
+                            match.players().getAt(playerInTurn)->value().
+                                  shuffle().
+                                  addCard(
+                                      match.deck().pop());
+                        }
+                    }
+                    else
+                    {
+                        std::cout <<
+                            "No puedes retar, no te han tirado ningun +4"
+                            << std::endl;
+                    }
+                }
+                else
+                {
+                    std::cout << "No puedes retar, no habilitaste la opción"
+                        << std::endl;
+                }
+
+                break;
+            } // RETAR
+        case 3:
+            {
+                if (player.shuffle().cards().getSize() == 1)
+                {
+                    std::cout << "Has anunciado que tienes una carta " <<
+                        std::endl;
+                    player.setSayUno(true);
+                    break;
+                }
+                std::cout <<
+                    "Tienes que tener únicamente una carta para decir uno" <<
+                    std::endl;
+                break;
+            } // UNO
+        case 4:
+            {
+                std::cout << "¿A quién quieres reportar?" << std::endl;
+                int option = input_.requestInteger();
+                if (match.players().getAt(option)->value().shuffle().cards().
+                          getSize() == 1 && !match.players().getAt(option)->
+                                                   value().sayUno())
+                {
+                    std::cout <<
+                        "Que observador, si tenía solo una carta y no dijo uno"
+                        <<
+                        std::endl;
+                    match.players().getAt(option)->value().shuffle().addCard(
+                        match.deck().pop());
+                    match.players().getAt(option)->value().shuffle().addCard(
+                        match.deck().pop());
+                }
+                else
+                {
+                    std::cout << "Reportaste erroneamente" << std::endl;
+                    std::cout << "Robas 2" << std::endl;
+                    match.players().getAt(playerInTurn)->value().shuffle().
+                          addCard(
+                              match.deck().pop());
+                    match.players().getAt(playerInTurn)->value().shuffle().
+                          addCard(
+                              match.deck().pop());
+                }
+
+
+                break;
+            } // REPORT
+        case 5:
+            {
+                if (match.config().multiSteal())
+                {
+                    player.shuffle().addCard(match.deck().pop());
+                    std::cout << "Se ha añadido una carta a tu bajara" <<
+                        std::endl;
+                }
+                else
+                {
+                    player.shuffle().addCard(match.deck().pop());
+                    std::cout << "Se ha añadido una carta a tu bajara" <<
+                        std::endl;
+                    success = true;
+                }
+
+                break;
+            } // JALAR
+        case 6:
+            {
+                std::exit(0);
             }
-
-            // d) player has cards?
-            if (player.shuffle().cards().getSize() == 0) gameOver = true;
-
-            break;
-        }
-    case 2:
-        {
-            rightRotation = !rightRotation;
-            break;
-        }
-    case 3:
-        {
-            std::cout << std::endl;
-            break;
-        }
-    case 4:
-        {
-            break;
-        }
-    case 5:
-        {
-            std::exit(0);
-        }
-    default:
-        {
-            std::cout << "Invalid option" << std::endl;
-            break;
+        default:
+            {
+                std::cout << "Invalid option" << std::endl;
+                success = false;
+                break;
+            }
         }
     }
+    while (!success);
 }
 
 void Engine::useUserFLipCards(Player& player, Match& match)
@@ -185,10 +315,16 @@ void Engine::useUserFLipCards(Player& player, Match& match)
 
     const int selectedCard = input_.requestInteger();
 
-    if (cardsAreCompatible(match.discardDeck().peek()->back().value(),
-                           player.shuffle().cards().getAt(selectedCard)->value()
-                                 ->back().value()))
+    Card::CardSide currentSide = match.discardDeck().peek()->back().value();
+    Card::CardSide selectedSide = player.shuffle().cards().getAt(selectedCard)->
+                                         value()->back().value();
+
+    if (cardsAreCompatible(currentSide, selectedSide))
     {
+        if (selectedSide.color() == CardColor::Black)
+        {
+            useUserBlackCard(selectedSide, true);
+        }
         match.discardDeck().push(
             player.shuffle().useCard(
                 selectedCard));
@@ -206,26 +342,61 @@ void Engine::useUserNormalCards(Player& player, Match& match)
 
     const int selectedCard = input_.requestInteger();
 
-    if (cardsAreCompatible(match.discardDeck().peek()->front(),
-                           player.shuffle().cards().getAt(selectedCard)->value()
-                                 ->front()))
+    Card::CardSide currentSide = match.discardDeck().peek()->front();
+    Card::CardSide selectedSide = player.shuffle().cards().getAt(selectedCard)->
+                                         value()->front();
+
+    if (cardsAreCompatible(currentSide, selectedSide))
     {
+        if (selectedSide.color() == CardColor::Black)
+        {
+            useUserBlackCard(selectedSide, false);
+        }
         match.discardDeck().push(
             player.shuffle().useCard(
                 selectedCard));
         std::cout << "Are compatible" << std::endl;
         return;
     }
-    std::cout << " NO Are compatible" << std::endl;
+    std::cout << " Are not compatible" << std::endl;
+}
+
+void Engine::useUserBlackCard(Card::CardSide selectedSide, bool flip)
+{
+    if (selectedSide.value() == CardValue::TheftOne) accumulation_ = 1;
+    if (selectedSide.value() == CardValue::TheftTwo) accumulation_ = 2;
+    if (selectedSide.value() == CardValue::TheftThree) accumulation_ = 3;
+    if (selectedSide.value() == CardValue::TheftFour) accumulation_ = 4;
+    if (selectedSide.value() == CardValue::TheftSix) accumulation_ = 6;
+    requestNewColor(flip);
 }
 
 bool Engine::cardsAreCompatible(Card::CardSide currentSide,
                                 Card::CardSide selectedSide)
 {
     return currentSide.value() == selectedSide.value()
-        || currentSide.color() == selectedSide.color();
+        || currentSide.color() == selectedSide.color()
+        || selectedSide.color() == CardColor::Black;
 }
 
+
+void Engine::requestNewColor(bool flip)
+{
+    std::cout << "Ingresa el nuevo color:" << std::endl;
+    if (!flip)
+    {
+        std::cout << "Colores disponibles:  [Red] [Yellow] [Blue] [Green]" <<
+            std::endl;
+    }
+    else
+    {
+        std::cout <<
+            "Colores disponibles:  [Pink] [Turquoise] [Orange] [Violet]" <<
+            std::endl;
+    }
+    std::string newColor = input_.requestString();
+    color_ = utilities_.stringToColor(newColor);
+}
 
 std::string Engine::getCurrentCardColor(Match& match, bool flip)
 {
@@ -259,4 +430,32 @@ void Engine::createPlayers(int players, Match& match)
         std::string name = input_.requestString();
         match.createPlayer(name);
     }
+}
+
+bool Engine::playerHadMoreCards(Player& player, Card& card, bool flip)
+{
+    for (int i = 0; i < player.shuffle().cards().getSize(); ++i)
+    {
+        if (!flip)
+        {
+            if (player.shuffle().cards().getAt(i)->value()->front().value() ==
+                card.front().value() || player.
+                                        shuffle().cards().getAt(i)->value()->
+                                        front().color() == card.front().color())
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if (player.shuffle().cards().getAt(i)->value()->back().value().
+                       value() == card.back()->value() || player.shuffle().
+                cards().
+                getAt(i)->value()->back()->color() == card.back()->color())
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }

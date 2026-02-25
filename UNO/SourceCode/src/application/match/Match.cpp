@@ -60,3 +60,8 @@ Stack<Card*>& Match::discardDeck()
 {
     return discardDeck_;
 }
+
+MatchConfig& Match::config()
+{
+    return config_;
+}

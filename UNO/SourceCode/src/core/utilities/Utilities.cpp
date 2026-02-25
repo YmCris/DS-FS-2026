@@ -47,6 +47,53 @@ int Utilities::getNext(bool rightRotation, int current, int listSize)
     return --current;
 }
 
+int Utilities::getPrevious(bool rightRotation, int current, int listSize)
+{
+    int previousIndex;
+
+    if (rightRotation)
+    {
+        if (current == 0)
+        {
+            previousIndex = listSize - 1;
+        }
+        else
+        {
+            previousIndex = current - 1;
+        }
+    }
+    else
+    {
+        if (current == listSize - 1)
+        {
+            previousIndex = 0;
+        }
+        else
+        {
+            previousIndex = current + 1;
+        }
+    }
+
+    return previousIndex;
+}
+
+std::optional<CardColor> Utilities::stringToColor(std::string str)
+{
+    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+
+    if (str == "red") return CardColor::Red;
+    if (str == "yellow") return CardColor::Yellow;
+    if (str == "blue") return CardColor::Blue;
+    if (str == "green") return CardColor::Green;
+    if (str == "black") return CardColor::Black;
+    if (str == "pink") return CardColor::Pink;
+    if (str == "turquoise") return CardColor::Turquoise;
+    if (str == "orange") return CardColor::Orange;
+    if (str == "violet") return CardColor::Violet;
+
+    return std::nullopt;
+}
+
 std::string Utilities::colorToString(CardColor color)
 {
     switch (color)
