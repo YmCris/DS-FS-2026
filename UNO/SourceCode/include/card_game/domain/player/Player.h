@@ -25,6 +25,9 @@ public:
     [[nodiscard]] bool blocked() const;
     [[nodiscard]] bool hadCards() const;
 
+    void setSayUno(bool say);
+    bool sayUno();
+
     Shuffle& shuffle();
     std::string name();
 
@@ -32,6 +35,7 @@ private:
     // DATA MEMBERS
     bool blocked_;
     bool hasCards_;
+    bool sayUno_ = false;
 
     Shuffle shuffle_;
     std::string name_;

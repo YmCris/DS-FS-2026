@@ -24,6 +24,16 @@ bool Player::hadCards() const
     return hasCards_;
 }
 
+void Player::setSayUno(bool say)
+{
+    sayUno_ = say;
+}
+
+bool Player::sayUno()
+{
+    return sayUno_;
+}
+
 Shuffle& Player::shuffle()
 {
     return shuffle_;

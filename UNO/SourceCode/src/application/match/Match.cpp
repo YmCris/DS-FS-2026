@@ -9,8 +9,8 @@
 // LIFETIME
 Match::Match(MatchConfig config, int players) :
     config_(config),
-    deck_(players, config.flip()/*, I1 cards_*/, ownedCards_) //,
-//discardDeck_()
+    deck_(players, config.flip(), ownedCards_),
+    discardDeck_(discardCards_)
 {
 }
 
@@ -34,21 +34,18 @@ void Match::setCardsToPlayers()
 {
     for (int i = 0; i < players_.getSize(); ++i)
     {
-        std::cout << "Player " << i << std::endl;
         for (int j = 0; j < 7; ++j)
         {
-            std::cout << "Card: " << j << std::endl;
             players_.getAt(i)->value().shuffle().addCard(deck_.pop());
         }
     }
 }
 
-/*
 Card* Match::seeTurnCard()
 {
     return discardDeck_.peek();
 }
-*/
+
 CircularDoubleLinkedList<Player>& Match::players()
 {
     return players_;
@@ -57,4 +54,14 @@ CircularDoubleLinkedList<Player>& Match::players()
 Deck& Match::deck()
 {
     return deck_;
+}
+
+Stack<Card*>& Match::discardDeck()
+{
+    return discardDeck_;
+}
+
+MatchConfig& Match::config()
+{
+    return config_;
 }

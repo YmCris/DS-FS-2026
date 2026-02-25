@@ -26,6 +26,8 @@ public:
     void addCard(Card* card);
     Card* useCard(int position);
     [[nodiscard]] const DoubleLinkedList<Card*>& cards() const;
+    void printFront();
+    void printBack();
 
 private:
     // DATA MEMBERS

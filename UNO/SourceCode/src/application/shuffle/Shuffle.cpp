@@ -4,6 +4,10 @@
 
 #include "../../../include/card_game/application/shuffle/Shuffle.h"
 
+#include <iostream>
+
+#include "../../../include/card_game/core/utilities/Utilities.h"
+
 
 // LIFETIME
 
@@ -39,4 +43,26 @@ const DoubleLinkedList<Card*>& Shuffle::cards() const
     return cards_;
 }
 
-// HELPERS
+void Shuffle::printFront()
+{
+    Utilities utilities;
+    for (int i = 0; i < cards_.getSize(); ++i)
+    {
+        std::cout << "   (" << i << ") " << utilities.valueToString(
+                cards_.getAt(i)->value()->front().value())
+            << " - " << utilities.colorToString(
+                cards_.getAt(i)->value()->front().color()) << std::endl;
+    }
+}
+
+void Shuffle::printBack()
+{
+    Utilities utilities;
+    for (int i = 0; i < cards_.getSize(); ++i)
+    {
+        std::cout << "   (" << i << ") " << utilities.valueToString(
+                cards_.getAt(i)->value()->back()->value())
+            << " " << utilities.colorToString(
+                cards_.getAt(i)->value()->back()->color()) << std::endl;
+    }
+}
