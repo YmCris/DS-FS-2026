@@ -27,7 +27,7 @@ SourceCode
 Compilación
 
 1. Clonar el repositorio
-git clone https://github.com/tu-usuario/tu-repo.git
+git clone [https://github.com/tu-usuario/tu-repo.git](https://github.com/YmCris/DS-FS-2026.git)
 cd tu-repo
 
 3. Crear directorio de build
