@@ -107,17 +107,11 @@ void Engine::play(std::vector<int> options)
         game_.showTurn(match.players().getAt(playerInTurn)->value().name());
 
         // c) Show the game with the info
-        game_.showGameScreen(
-            match.players().getAt(playerInTurn)->value().name(),
-            match.players().getAt(next)->value().name(),
-            getCurrentCardValue(match, flip),
-            getCurrentCardColor(match, flip),
-            std::to_string(options[1]), std::to_string(match.deck().size()),
-            std::to_string(match.discardDeck().size())
-        );
+
 
         // d) catch the user option
-        playerOption(match, playerInTurn, rightRotation, flip, gameOver);
+        playerOption(match, playerInTurn, rightRotation, flip, gameOver, next,
+                     options[1]);
         lastPlayer = playerInTurn;
         // e) Set the new player in turn
         playerInTurn = next;
@@ -127,12 +121,21 @@ void Engine::play(std::vector<int> options)
 }
 
 void Engine::playerOption(Match& match, int playerInTurn, bool& rightRotation,
-                          bool flip, bool& gameOver)
+                          bool& flip, bool& gameOver, int& next, int option)
 {
     Player& player = match.players().getAt(playerInTurn)->value();
     bool success = false;
     do
     {
+        game_.showGameScreen(
+            match.players().getAt(playerInTurn)->value().name(),
+            match.players().getAt(next)->value().name(),
+            getCurrentCardValue(match, flip),
+            getCurrentCardColor(match, flip),
+            std::to_string(option), std::to_string(match.deck().size()),
+            std::to_string(match.discardDeck().size())
+        );
+
         switch (input_.requestInteger())
         {
         case 1: // Put card
@@ -142,12 +145,46 @@ void Engine::playerOption(Match& match, int playerInTurn, bool& rightRotation,
                 if (flip)
                 {
                     // b) Use flip cards
-                    useUserFLipCards(player, match);
+                    useUserFLipCards(player, match, success);
+                    setCardsFunction(match, playerInTurn, next,
+                                     *match.discardDeck().peek(), flip,
+                                     rightRotation);
+                    if (accumulation_ > 0)
+                    {
+                        Player& nextPlayer = match.players().getAt(next)->
+                                                   value();
+
+                        for (int i = 0; i < accumulation_; ++i)
+                        {
+                            nextPlayer.shuffle().addCard(match.deck().pop());
+                        }
+
+                        accumulation_ = 0;
+                        success = true;
+                        return;
+                    }
                 }
                 else
                 {
                     // b) Use normal cards (Normal and normal flip)
-                    useUserNormalCards(player, match);
+                    useUserNormalCards(player, match, success);
+                    setCardsFunction(match, playerInTurn, next,
+                                     *match.discardDeck().peek(), flip,
+                                     rightRotation);
+                    if (accumulation_ > 0)
+                    {
+                        Player& nextPlayer = match.players().getAt(next)->
+                                                   value();
+
+                        for (int i = 0; i < accumulation_; ++i)
+                        {
+                            nextPlayer.shuffle().addCard(match.deck().pop());
+                        }
+
+                        accumulation_ = 0;
+                        success = true;
+                        return;
+                    }
                 }
 
                 // d) player has cards?
@@ -168,7 +205,7 @@ void Engine::playerOption(Match& match, int playerInTurn, bool& rightRotation,
 
                         if (playerHadMoreCards(
                             match.players().getAt(prev)->value(),
-                            *match.deck().peek(), flip))
+                            *match.discardDeck().peek(), flip))
                         {
                             std::cout << "The user had another card, theft +4";
                             match.players().getAt(prev)->value().shuffle().
@@ -304,11 +341,12 @@ void Engine::playerOption(Match& match, int playerInTurn, bool& rightRotation,
                 break;
             }
         }
+        input_.waitForEnter();
     }
     while (!success);
 }
 
-void Engine::useUserFLipCards(Player& player, Match& match)
+void Engine::useUserFLipCards(Player& player, Match& match, bool& succes)
 {
     player.shuffle().printBack();
     view_.showFloor();
@@ -329,13 +367,14 @@ void Engine::useUserFLipCards(Player& player, Match& match)
             player.shuffle().useCard(
                 selectedCard));
         std::cout << "Are compatible" << std::endl;
+        succes = true;
         return;
     }
-
+    succes = false;
     std::cout << " NO Are compatible" << std::endl;
 }
 
-void Engine::useUserNormalCards(Player& player, Match& match)
+void Engine::useUserNormalCards(Player& player, Match& match, bool& success)
 {
     player.shuffle().printFront();
     view_.showFloor();
@@ -356,8 +395,10 @@ void Engine::useUserNormalCards(Player& player, Match& match)
             player.shuffle().useCard(
                 selectedCard));
         std::cout << "Are compatible" << std::endl;
+        success = true;
         return;
     }
+    success = false;
     std::cout << " Are not compatible" << std::endl;
 }
 
@@ -458,4 +499,61 @@ bool Engine::playerHadMoreCards(Player& player, Card& card, bool flip)
         }
     }
     return false;
+}
+
+
+void Engine::setCardsFunction(Match& match, int playerInTurn, int& newNext,
+                              Card& card,
+                              bool& flip, bool& rightRotation)
+{
+    if (!flip)
+    {
+        switch (card.front().value())
+        {
+        case CardValue::SkipNext:
+            {
+                int next = utilities_.getNext(rightRotation, playerInTurn,
+                                              match.players().getSize());
+                newNext = utilities_.getNext(rightRotation, next,
+                                             match.players().getSize());
+                break;
+            }
+        case CardValue::Revers:
+            {
+                rightRotation = !rightRotation;
+                break;
+            }
+        case CardValue::Flip:
+            {
+                flip = !flip;
+                break;
+            }
+        }
+    }
+    else
+    {
+        switch (card.back().value().value())
+        {
+        case CardValue::SkipAll:
+            {
+                newNext = playerInTurn;
+                break;
+            }
+        case CardValue::EternalColor:
+            {
+                // Joder, no lo sé
+                break;
+            }
+        case CardValue::Revers:
+            {
+                rightRotation = !rightRotation;
+                break;
+            }
+        case CardValue::Flip:
+            {
+                flip = !flip;
+                break;
+            }
+        }
+    }
 }

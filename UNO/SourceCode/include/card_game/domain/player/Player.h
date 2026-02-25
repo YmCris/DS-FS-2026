@@ -35,7 +35,7 @@ private:
     // DATA MEMBERS
     bool blocked_;
     bool hasCards_;
-    bool sayUno_;
+    bool sayUno_ = false;
 
     Shuffle shuffle_;
     std::string name_;

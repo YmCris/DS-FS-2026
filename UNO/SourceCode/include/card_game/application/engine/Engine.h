@@ -29,11 +29,14 @@ public:
     void startGame();
     void play(std::vector<int> options);
     void playerOption(Match& match, int playerInTurn, bool& rightRotation,
-                      bool flip, bool& gameOver);
+                      bool& flip, bool& gameOver, int& next, int option);
+
     void createPlayers(int players, Match& match);
     bool playerHadMoreCards(Player& player, Card& card, bool flip);
-    void useUserFLipCards(Player& player, Match& match);
-    void useUserNormalCards(Player& player, Match& match);
+    void setCardsFunction(Match& match, int playerInTurn, int& next, Card& card,
+                          bool&  flip, bool& rightRotation);
+    void useUserFLipCards(Player& player, Match& match, bool& success);
+    void useUserNormalCards(Player& player, Match& match, bool& success);
     bool cardsAreCompatible(Card::CardSide currentSide,
                             Card::CardSide selectedSide);
     void useUserBlackCard(Card::CardSide selectedSide, bool flip);
